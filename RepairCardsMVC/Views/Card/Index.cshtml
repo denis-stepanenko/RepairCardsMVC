@@ -1,0 +1,169 @@
+﻿@model PaginatedList<Card>
+
+<h2>Карты ремонта</h2>
+
+<form method="get">
+    <div class="input-group">
+        <input type="text"
+               name="filter"
+               class="form-control rounded"
+               placeholder="Поиск"
+               aria-label="Search"
+               aria-describedby="search-addon"
+               value="@ViewBag.Filter" />
+
+        <input type="submit" class="btn btn-outline-primary" value="Найти" />
+    </div>
+</form>
+
+@if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+{
+    <div>
+        <a class="btn btn-dark"
+       asp-action="Create"
+       asp-route-pageNumber="@ViewBag.PageNumber"
+       asp-route-filter="@ViewBag.Filter">Добавить</a>
+    </div>
+}
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Номер</th>
+            <th>Цех</th>
+            <th>Заказ производства</th>
+            <th>Заводской номер</th>
+            <th>Группа направления деятельности</th>
+            <th>Направление деятельности</th>
+            <th>Артикул</th>
+            <th>Наименование</th>
+            <th>Номер накладной</th>
+            <th>Дата поступления</th>
+            <th>Тип ремонта</th>
+            <th>Статус</th>
+            <th width="350px"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Number</td>
+                <td>@item.Department</td>
+                <td>@item.Stage</td>
+                <td>@item.FactoryNumber</td>
+                <td>@item.Direction</td>
+                <td>@item.Cipher</td>
+                <td>@item.ProductCode</td>
+                <td>@item.ProductName</td>
+                <td>@item.InvoiceNumber</td>
+                <td>@item.Date?.ToString("dd.MM.yyyy")</td>
+                <td>@item.RepairType?.Name</td>
+                <td>@item.CardStatus?.Name</td>
+                <td>
+                    <a class="btn btn-success"
+                   asp-action="Edit"
+                   asp-route-id="@item.Id"
+                   asp-route-pageNumber="@ViewBag.PageNumber"
+                   asp-route-filter="@ViewBag.Filter">Изменить</a>
+
+                    @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+                    {
+                        <a class="btn btn-warning"
+                   asp-action="Delete"
+                   asp-route-id="@item.Id"
+                   asp-route-pageNumber="@ViewBag.PageNumber"
+                   asp-route-filter="@ViewBag.Filter">Удалить</a>
+
+                        <a class="btn btn-info"
+                   asp-action="Duplicate"
+                   asp-route-id="@item.Id"
+                   asp-route-pageNumber="@ViewBag.PageNumber"
+                   asp-route-filter="@ViewBag.Filter">Дублировать</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination justify-content-center">
+        @{
+            int page = ViewBag.PageNumber;
+            int count = Model.TotalPages;
+            int countOfVisiblePages = 15;
+
+            int start = Math.Min(Math.Max(1, page - 2), count - countOfVisiblePages);
+            int end = Math.Min(start + countOfVisiblePages, count);
+
+            bool showFirstPage = start > 1;
+            bool showLastPage = end < count;
+
+            if (count <= countOfVisiblePages)
+            {
+                start = 1;
+                end = count;
+                showFirstPage = false;
+                showLastPage = false;
+            }
+
+            <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-pageNumber="@(Model.PageNumber - 1)"
+               asp-route-filter="@ViewBag.Filter">Назад</a>
+            </li>
+
+            if (showFirstPage)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-pageNumber="1"
+               asp-route-filter="@ViewBag.Filter">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            }
+
+            for (int i = start; i <= end; i++)
+            {
+                if (page != i)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+               asp-route-pageNumber="@i"
+               asp-route-filter="@ViewBag.Filter">@i</a>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">@i</a>
+                    </li>
+                }
+            }
+
+            if (showLastPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-pageNumber="@count"
+               asp-route-filter="@ViewBag.Filter">@count</a>
+                </li>
+
+            }
+
+            <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
+               asp-route-filter="@ViewBag.Filter">Вперед</a>
+            </li>
+        }
+    </ul>
+</nav>

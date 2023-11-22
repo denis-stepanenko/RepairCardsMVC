@@ -1,0 +1,348 @@
+﻿<a asp-controller="Card"
+   asp-action="Edit"
+   asp-route-id="@ViewBag.CardId"
+   asp-route-pageNumber="@ViewBag.CardsPageNumber"
+   asp-route-filter="@ViewBag.CardsFilter">Назад</a>
+
+<style>
+    .numberColumn {
+        white-space: nowrap;
+    }
+</style>
+
+@if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+{
+    <h2>Карты</h2>
+
+    <table id="cards" class="display">
+        <thead>
+            <tr>
+                <th>Номер</th>
+                <th>Децимальный номер</th>
+                <th>Наименование</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+}
+
+<h2>Входящие карты</h2>
+<br />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+
+            <h2>Демонтированные карты</h2>
+
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Номер</th>
+                        <th>Группа направления деятельности</th>
+                        <th>Направление деятельности</th>
+                        <th>Децимальный номер</th>
+                        <th>Наименование</th>
+                        <th>Карта не ремонтировалась</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.ExtractedCards)
+                    {
+                        <tr data-tt-id="@item.Id" data-tt-parent-id="@item.ParentId">
+                            <td class="numberColumn">@item.Number</td>
+                            <td>@item.Direction</td>
+                            <td>@item.Cipher</td>
+                            <td>@item.ProductCode</td>
+                            <td>@item.ProductName</td>
+                            <td>@item.HasNotBeenRepaired</td>
+                            <td>
+                                @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+                                {
+                                    <a asp-action="DeleteExtractedCard"
+                               asp-route-id="@item.Id"
+                               asp-route-cardId="@ViewBag.CardId"
+                               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                               asp-route-cardsFilter="@ViewBag.CardsFilter"
+                                       class="btn btn-danger">Удалить</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="col">
+
+            <h2>Установленные карты</h2>
+
+            <table class="table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Номер</th>
+                        <th>Группа направления деятельности</th>
+                        <th>Направление деятельности</th>
+                        <th>Децимальный номер</th>
+                        <th>Наименование</th>
+                        <th>Карта не ремонтировалась</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.InstalledCards)
+                    {
+                        <tr data-tt-id="@item.Id" data-tt-parent-id="@item.ParentId">
+                            <td class="numberColumn">@item.Number</td>
+                            <td>@item.Direction</td>
+                            <td>@item.Cipher</td>
+                            <td>@item.ProductCode</td>
+                            <td>@item.ProductName</td>
+                            <td>@item.HasNotBeenRepaired</td>
+                            <td>
+                                @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+                                {
+                                    <a asp-action="DeleteInstalledCard"
+                               asp-route-id="@item.Id"
+                               asp-route-cardId="@ViewBag.CardId"
+                               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                               asp-route-cardsFilter="@ViewBag.CardsFilter"
+                                       class="btn btn-danger">Удалить</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<h2>Дерево входящих</h2>
+
+<a class="btn btn-dark" id="calculate">Расчитать</a>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+
+            <h2>Демонтированные карты</h2>
+
+            <div id="extracted-cards-container"></div>
+
+        </div>
+
+        <div class="col">
+
+            <h2>Установленные карты</h2>
+
+            <div id="installed-cards-container"></div>
+
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center">
+    <div id="spinner" class="spinner-border text-warning" role="status">
+    </div>
+</div>
+
+<script>
+
+    let extractedCards;
+
+    function addTableForExtractedCards() {
+        $("#extracted-cards-container").append(`<table id="extracted-cards" class="table">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>Номер</th>
+                                                    <th>Группа направления деятельности</th>
+                                                    <th>Направление деятельности</th>
+                                                    <th>Децимальный номер</th>
+                                                    <th>Наименование</th>
+                                                    <th>Не ремонтировалась</th>
+                                                </tr>
+                                            </thead>
+                                                <tbody id="extracted-cards-body">
+                                            </tbody>
+                                        </table>`);
+    }
+
+    async function retrieveExtractedCards(id) {
+
+        addTableForExtractedCards();
+
+        const response = await fetch("/CardChildCard/GetExtractedCards?parentId=" + id);
+        extractedCards = await response.json();
+
+        let container = $("#extracted-cards-body");
+
+        extractedCards.forEach(item => {
+            let row = $("<tr>");
+            row.attr("data-tt-id", item.id);
+            row.attr("data-tt-parent-id", item.parentId);
+
+            let number = $("<td>");
+            number.attr("class", "numberColumn");
+            number.text(item.number);
+            row.append(number);
+
+            let direction = $("<td>");
+            direction.text(item.direction);
+            row.append(direction);
+
+            let cipher = $("<td>");
+            cipher.text(item.cipher);
+            row.append(cipher);
+
+            let productCode = $("<td>");
+            productCode.text(item.productCode);
+            row.append(productCode);
+
+            let productName = $("<td>");
+            productName.text(item.productName);
+            row.append(productName);
+
+            let hasNotBeenRepaired = $("<td>");
+            hasNotBeenRepaired.text(item.hasNotBeenRepaired);
+            row.append(hasNotBeenRepaired);
+
+            container.append(row);
+        });
+
+        $(document).ready(function () {
+            $("#extracted-cards").treetable({ expandable: true });
+        });
+
+    }
+</script>
+
+<script>
+
+    let installedCards;
+
+    function addTableForInstalledCards() {
+        $("#installed-cards-container").append(`<table id="installed-cards" class="table">
+                                                    <thead class="table-dark">
+                                                        <tr>
+                                                            <th>Номер</th>
+                                                            <th>Группа направления деятельности</th>
+                                                            <th>Направление деятельности</th>
+                                                            <th>Децимальный номер</th>
+                                                            <th>Наименование</th>
+                                                            <th>Не ремонтировалась</th>
+                                                        </tr>
+                                                    </thead>
+                                                            <tbody id="installed-cards-body">
+                                                    </tbody>
+                                                </table>`);
+    }
+
+    async function retrieveInstalledCards(id) {
+
+        addTableForInstalledCards();
+
+        const response = await fetch("/CardChildCard/GetInstalledCards?parentId=" + id);
+        installedCards = await response.json();
+
+        let container = $("#installed-cards-body");
+
+        installedCards.forEach(item => {
+            let row = $("<tr>");
+            row.attr("data-tt-id", item.id);
+            row.attr("data-tt-parent-id", item.parentId);
+
+            let number = $("<td>");
+            number.attr("class", "numberColumn");
+            number.text(item.number);
+            row.append(number);
+
+            let direction = $("<td>");
+            direction.text(item.direction);
+            row.append(direction);
+
+            let cipher = $("<td>");
+            cipher.text(item.cipher);
+            row.append(cipher);
+
+            let productCode = $("<td>");
+            productCode.text(item.productCode);
+            row.append(productCode);
+
+            let productName = $("<td>");
+            productName.text(item.productName);
+            row.append(productName);
+
+            let hasNotBeenRepaired = $("<td>");
+            hasNotBeenRepaired.text(item.hasNotBeenRepaired);
+            row.append(hasNotBeenRepaired);
+
+            container.append(row);
+        });
+
+        $(document).ready(function () {
+            $("#installed-cards").treetable({ expandable: true });
+        });
+    }
+</script>
+
+<script>
+    addTableForExtractedCards();
+    addTableForInstalledCards();
+
+    $("#spinner").hide();
+
+    async function DoSomething() {
+
+        $("#extracted-cards-container").empty();
+        $("#installed-cards-container").empty();
+        extractedCards = [];
+        installedCards = [];
+
+        $("#spinner").show();
+
+        let promises = [];
+
+        promises.push(retrieveExtractedCards(@ViewBag.CardId));
+        promises.push(retrieveInstalledCards(@ViewBag.CardId));
+
+        await Promise.all(promises);
+
+        $("#spinner").hide();
+    }
+
+    $('#calculate').on('click', function () {
+        DoSomething();
+    });
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#cards').DataTable(
+            {
+                ajax: {
+                    url: "/CardChildCard/GetCards",
+                    type: "POST",
+                },
+                processing: true,
+                serverSide: true,
+                filter: true,
+                columns: [
+                    { data: "number", name: "Number" },
+                    { data: "productCode", name: "Code" },
+                    { data: "productName", name: "Name" },
+                    {
+                        "render": function (data, type, row) {
+                            return "<a class=\"btn btn-dark\" href=\"\\CardChildCard\\AddExtractedCard\\" + row.id + "?cardId=@ViewBag.CardId&cardsPageNumber=@ViewBag.CardsPageNumber&cardsFilter=@ViewBag.CardsFilter\">Добавить как демонтированную</a>" +
+                                "<a class=\"btn btn-info\" href=\"\\CardChildCard\\AddInstalledCard\\" + row.id + "?cardId=@ViewBag.CardId&cardsPageNumber=@ViewBag.CardsPageNumber&cardsFilter=@ViewBag.CardsFilter\">Добавить как установленную</a>";
+                        }
+                    }
+                ]
+            }
+        );
+    });
+</script>

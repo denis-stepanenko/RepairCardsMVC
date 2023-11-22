@@ -1,0 +1,69 @@
+﻿@model Card
+
+<a asp-action="Index"
+   asp-route-filter="@ViewBag.Filter"
+   asp-route-pageNumber="@ViewBag.PageNumber">Назад</a>
+
+<h2 class="mb-4">Удаление</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Номер</dt>
+    <dd class="col-sm-9">@Model.Number</dd>
+
+    <dt class="col-sm-3">Номер акта</dt>
+    <dd class="col-sm-9">@Model.ActNumber</dd>
+
+    <dt class="col-sm-3">Номер карты разрешения</dt>
+    <dd class="col-sm-9">@Model.PermissionCardNumber</dd>
+
+    <dt class="col-sm-3">Цех</dt>
+    <dd class="col-sm-9">@Model.Department</dd>
+
+    <dt class="col-sm-3">Заказ производства</dt>
+    <dd class="col-sm-9">@Model.Stage</dd>
+
+    <dt class="col-sm-3">Заводской номер</dt>
+    <dd class="col-sm-9">@Model.FactoryNumber</dd>
+
+    <dt class="col-sm-3">Заказ</dt>
+    <dd class="col-sm-9">@Model.Order</dd>
+
+    <dt class="col-sm-3">Группа направления деятельности</dt>
+    <dd class="col-sm-9">@Model.Direction</dd>
+
+    <dt class="col-sm-3">Направление деятельности</dt>
+    <dd class="col-sm-9">@Model.Cipher</dd>
+
+    <dt class="col-sm-3">Децимальный номер</dt>
+    <dd class="col-sm-9">@Model.ProductCode</dd>
+
+    <dt class="col-sm-3">Наименование</dt>
+    <dd class="col-sm-9">@Model.ProductName</dd>
+
+    <dt class="col-sm-3">Номер накладной</dt>
+    <dd class="col-sm-9">@Model.InvoiceNumber</dd>
+
+    <dt class="col-sm-3">Дата поступления</dt>
+    <dd class="col-sm-9">@Model.Date?.ToString("dd.MM.yyyy")</dd>
+
+    <dt class="col-sm-3">Откуда поступил</dt>
+    <dd class="col-sm-9">@Model.Source</dd>
+
+    <dt class="col-sm-3">Причина ремонта</dt>
+    <dd class="col-sm-9">@Model.ReasonForRepair</dd>
+
+    <dt class="col-sm-3">Тип ремонта</dt>
+    <dd class="col-sm-9">@Model.RepairType?.Name</dd>
+
+    <dt class="col-sm-3">Статус</dt>
+    <dd class="col-sm-9">@Model.CardStatus?.Name</dd>
+</dl>
+
+<form method="post">
+    <input name="Id" value="@Model.Id" hidden />
+    <input name="Filter" value="@ViewBag.Filter" hidden />
+    <input name="PageNumber" value="@ViewBag.PageNumber" hidden />
+
+    <button type="submit" class="btn btn-danger">Удалить</button>
+</form>
+

@@ -1,0 +1,230 @@
+﻿<a asp-action="Index"
+   asp-route-id="@ViewBag.CardId"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardsFilter="@ViewBag.CardsFilter">Назад</a>
+<br />
+
+<button id="add" class="btn btn-dark">Добавить</button>
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <table id="myTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Децимальный номер</th>
+                        <th>Наименование</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col">
+            <div id="result"></div>
+
+            <div class="d-flex justify-content-center">
+                <div id="spinner" class="spinner-border text-warning" role="status" hidden>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .checkboxColumn {
+        white-space: nowrap;
+    }
+
+    .codeColumn {
+        white-space: nowrap;
+    }
+</style>
+
+<script>
+
+    let data;
+
+    function addTable() {
+        $("#result").append(`<table id="example-basic" class="table">
+                            <thead class="table-dark">
+                            <tr>
+                            <th></th>
+                            <th>Децимальный номер</th>
+                            <th>Наименование</th>
+                            <th>Количество</th>
+                            <th>Маршрут</th>
+                            </tr>
+                            </thead>
+                            <tbody id = "container">
+                            </tbody>
+                            </table>`);
+    }
+
+    async function retrieveData(code) {
+
+        addTable();
+
+        $('#add').prop('disabled', true);
+        $("#spinner").show();
+
+        const response = await fetch("/CardOwnProduct/GetNodes?code=" + code);
+        data = await response.json();
+
+        let container = $("#container");
+
+        data.forEach(item => {
+            let row = $("<tr>");
+            row.attr("data-tt-id", item.id);
+            row.attr("data-tt-parent-id", item.parentId);
+
+            let isChecked = $("<td>");
+            isChecked.attr("class", "checkboxColumn");
+            let checkBox = $("<input>");
+            checkBox.attr("type", "checkBox");
+            checkBox.attr("name", "isChecked");
+            checkBox.attr("value", item.id);
+            isChecked.append(checkBox);
+            row.append(isChecked);
+
+            let code = $("<td>");
+            code.attr("class", "codeColumn");
+            code.text(item.code);
+            row.append(code);
+
+            let name = $("<td>");
+            name.text(item.name);
+            row.append(name);
+
+            let count = $("<td>");
+            count.text(item.count);
+            row.append(count);
+
+            let route = $("<td>");
+            route.text(item.route);
+            row.append(route);
+
+            container.append(row);
+        });
+
+        $(document).ready(function () {
+            $("#example-basic").treetable({ expandable: true });
+            $("#example-basic").treetable('expandAll');
+        });
+
+        $(document).ready(function () {
+            $(":checkbox").change(function () {
+
+                let ids = getChildNodes(this.value).map(item => String(item.id));
+                ids.push(this.value);
+
+                selectNodes(ids, this.checked);
+            });
+        });
+
+        $('#add').prop('disabled', false);
+        $("#spinner").hide();
+    }
+
+    function selectCheckboxex(ids, value) {
+        let checkboxesWithValue = $(":checkbox").filter(function () {
+            return ids.indexOf($(this).val()) >= 0;
+        });
+
+        checkboxesWithValue.prop('checked', value);
+    }
+
+    function selectNodes(ids, value) {
+        selectCheckboxex(ids, value);
+
+        data.forEach(item => {
+            if (ids.indexOf(String(item.id)) >= 0) {
+                item.isChecked = value;
+            }
+        });
+    }
+
+    function getChildNodes(id) {
+        let result = [];
+
+        function recursion(nodes) {
+            nodes.forEach(item => {
+                let children = getChildren(item.id);
+                result.push(...children);
+                recursion(children);
+            });
+        }
+
+
+        function getChildren(id) {
+            return data.filter(item => item.parentId == id);
+        }
+
+        result.push(...getChildren(id));
+
+        recursion(result);
+
+        return result;
+    }
+
+    $('#add').on('click', function () {
+
+        let result = {
+            items: data,
+            cardId: @ViewBag.CardId
+            };
+
+        const jsonData = JSON.stringify(result);
+
+        fetch("/CardOwnProduct/Create", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        }).then(response => {
+            window.location.replace('/CardOwnProduct/Index?Id=@ViewBag.CardId&CardsPageNumber=@ViewBag.CardsPageNumber&CardsFilter=@ViewBag.CardsFilter');
+        });
+    });
+
+    $('#clear').on('click', function () {
+        $("#result").empty();
+        data = [];
+    });
+
+    $('#load').on('click', function () {
+        retrieveData();
+    });
+
+    function calculate(code) {
+        $("#result").empty();
+        data = [];
+        retrieveData(code);
+    }
+
+    addTable();
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable(
+            {
+                ajax: {
+                    url: "/cardownproduct/getproductlist",
+                    type: "POST",
+                },
+                processing: true,
+                serverSide: true,
+                filter: true,
+                columns: [
+                    { data: "code", name: "Code" },
+                    { data: "name", name: "Name" },
+                    {
+                        "render": function (data, type, row) { return "<a href='#' class='btn btn-dark' onclick=calculate('" + row.code + "'); >Расчитать</a>"; }
+                    }
+                ]
+            }
+        );
+    });
+</script>

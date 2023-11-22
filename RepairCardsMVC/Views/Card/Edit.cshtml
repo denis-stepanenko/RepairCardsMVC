@@ -1,0 +1,626 @@
+﻿@model Card
+
+<a asp-action="Index"
+   asp-route-filter="@ViewBag.Filter"
+   asp-route-pageNumber="@ViewBag.PageNumber">
+    Назад
+</a>
+
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a asp-controller="CardChildCard"
+                   asp-action="Index"
+                   asp-route-cardId="@Model.Id"
+                   asp-route-cardsFilter="@ViewBag.Filter"
+                   asp-route-cardsPageNumber="@ViewBag.PageNumber"
+                   class="nav-link">Входящие</a>
+
+                <a asp-controller="CardDetails"
+                   asp-action="Edit"
+                   asp-route-cardId="@Model.Id"
+                   asp-route-cardsFilter="@ViewBag.Filter"
+                   asp-route-cardsPageNumber="@ViewBag.PageNumber"
+                   class="nav-link">Дефектация и неисправности</a>
+
+                <a asp-controller="CardOperation"
+                   asp-action="Index"
+                   asp-route-cardId="@Model.Id"
+                   asp-route-type="0"
+                   asp-route-cardsFilter="@ViewBag.Filter"
+                   asp-route-cardsPageNumber="@ViewBag.PageNumber"
+                   class="nav-link">Плановые операции</a>
+
+                <a asp-controller="CardOperation"
+                   asp-action="Index"
+                   asp-route-cardId="@Model.Id"
+                   asp-route-type="1"
+                   asp-route-cardsFilter="@ViewBag.Filter"
+                   asp-route-cardsPageNumber="@ViewBag.PageNumber"
+                   class="nav-link">Фактические операции</a>
+
+                <a asp-controller="CardMaterial"
+                   asp-action="Index"
+                   asp-route-cardId="@Model.Id"
+                   asp-route-cardsFilter="@ViewBag.Filter"
+                   asp-route-cardsPageNumber="@ViewBag.PageNumber"
+                   class="nav-link">Материалы</a>
+
+                <a asp-controller="CardOwnProduct"
+                   asp-action="Index"
+                   asp-route-id="@Model.Id"
+                   asp-route-cardsFilter="@ViewBag.Filter"
+                   asp-route-cardsPageNumber="@ViewBag.PageNumber"
+                   class="nav-link">ДСЕ</a>
+
+                <a asp-controller="CardPurchasedProduct"
+                   asp-action="Index"
+                   asp-route-id="@Model.Id"
+                   asp-route-cardsFilter="@ViewBag.Filter"
+                   asp-route-cardsPageNumber="@ViewBag.PageNumber"
+                   class="nav-link">ПКИ</a>
+
+                <a asp-controller="CardDocument"
+                   asp-action="Index"
+                   asp-route-cardId="@Model.Id"
+                   asp-route-cardsFilter="@ViewBag.Filter"
+                   asp-route-cardsPageNumber="@ViewBag.PageNumber"
+                   class="nav-link">Документы</a>
+
+                <a asp-controller="CardConfirmation"
+                   asp-action="Index"
+                   asp-route-cardId="@Model.Id"
+                   asp-route-cardsFilter="@ViewBag.Filter"
+                   asp-route-cardsPageNumber="@ViewBag.PageNumber"
+                   class="nav-link">Утверждения</a>
+
+                <a asp-controller="CardReport"
+                   asp-action="Index"
+                   asp-route-cardId="@Model.Id"
+                   asp-route-cardsFilter="@ViewBag.Filter"
+                   asp-route-cardsPageNumber="@ViewBag.PageNumber"
+                   class="nav-link">Отчеты</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div style="float:right; margin-top:5px;">
+
+    @if(User.IsInRole("ooiot"))
+    {
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exportToNormaVremiaModal">
+            Экспортировать в Норма-Время
+        </button>
+    }
+
+    <div class="modal fade" id="exportToNormaVremiaModal" tabindex="-1" aria-labelledby="exportToNormaVremiaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportToNormaVremiaModalLabel">Внимание</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" asp-action="ExportToNormaVremia">
+                    <div class="modal-body">
+                        Экспортировать операции из этой карты в Норма-Время?<br />
+                        <input type="number" name="department" placeholder="Цех" />
+                        <input name="id" value="@Model.Id" hidden />
+                        <input name="pageNumber" value="@ViewBag.PageNumber" hidden />
+                        <input name="filter" value="@ViewBag.Filter" hidden />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Экспорт</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    @if(User.IsInRole("skb"))
+    {
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exportToPDMModal">
+            Экспортировать в ВПР
+        </button>
+    }
+
+    <div class="modal fade" id="exportToPDMModal" tabindex="-1" aria-labelledby="exportToPDMModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exportToPDMModalLabel">Внимание</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Эспортировать ДСЕ и ПКИ в ВПР?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <a asp-action="ExportToPDM"
+                       asp-route-cardId="@Model.Id"
+                       asp-route-cardsPageNumber="@ViewBag.PageNumber"
+                       asp-route-cardsFilter="@ViewBag.Filter"
+                       class="btn btn-primary">Экспорт</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb", "peo", "skie"))
+    {
+        <a asp-controller="Request" asp-action="Create" class="btn btn-dark" target="_blank">Создать заявку</a>
+
+        <form method="post" asp-controller="ExportRequest" asp-action="Index" target="_blank" style="display:inline;">
+            <input name="Id" value="@Model.Id" hidden />
+
+            <button class="btn btn-dark">Создать заявку на экспорт</button>
+        </form>
+    }
+
+</div>
+<br />
+
+<h2>Карта ремонта</h2>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <input name="Filter" value="@ViewBag.Filter" hidden />
+    <input name="PageNumber" value="@ViewBag.PageNumber" hidden />
+
+    <input asp-for="Id" hidden />
+
+    <div class="form-check">
+        @Html.CheckBoxFor(x => x.HasNotBeenRepaired, new { @class = "medium" })
+
+        <label class="form-check-label">Карта не ремонтировалась</label>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Демонтирована из</label>
+        <div class="col-sm-10">
+            <select id="cards" asp-for="ParentId" placeholder="Поиск">
+                @if (Model.Parent != null)
+                {
+                    <option value="@Model.ParentId">@Model.Parent.Number</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Установлена в</label>
+        <div class="col-sm-10">
+            <select id="cards2" asp-for="ParentId2" placeholder="Поиск">
+                @if (Model.Parent2 != null)
+                {
+                    <option value="@Model.ParentId2">@Model.Parent2.Number</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Номер</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="Number">
+            <span class="text-danger" asp-validation-for="Number"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Цех</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="Department">
+            <span class="text-danger" asp-validation-for="Department"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Заказ производства</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="Stage">
+            <span class="text-danger" asp-validation-for="Stage"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Заводской номер</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="FactoryNumber">
+            <span class="text-danger" asp-validation-for="FactoryNumber"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Продукт</label>
+        <div class="col-sm-10">
+            <select id="product" placeholder="Поиск" asp-for="ProductCode">
+                @if (Model.ProductCode != null)
+                {
+                    <option value="@Model.ProductCode">@Model.ProductName</option>
+                }
+            </select>
+            <span class="text-danger" asp-validation-for="ProductName"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Заказ</label>
+        <div class="col-sm-10">
+            <select id="order" placeholder="Поиск" asp-for="Order">
+                @if (Model.Order != null)
+                {
+                    <option value="@Model.Order">@(Model.Cipher ?? Model.Direction)</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Номер накладной</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="InvoiceNumber">
+            <span class="text-danger" asp-validation-for="InvoiceNumber"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Дата поступления</label>
+        <div class="col-sm-10">
+            <input type="date" class="form-control" asp-for="Date">
+            <span class="text-danger" asp-validation-for="Date"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Откуда поступил</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="Source">
+            <span class="text-danger" asp-validation-for="Source"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Номер карты разрешения</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="PermissionCardNumber">
+            <span class="text-danger" asp-validation-for="PermissionCardNumber"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Номер акта</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="ActNumber">
+            <span class="text-danger" asp-validation-for="ActNumber"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Тип ремонта</label>
+        <div class="col-sm-10">
+            <select class="form-select" asp-items="@ViewBag.Types" asp-for="RepairTypeId"></select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Статус</label>
+        <div class="col-sm-10">
+            <select class="form-select" asp-items="@ViewBag.Statuses" asp-for="CardStatusId"></select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Причина ремонта</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="ReasonForRepair">
+            <span class="text-danger" asp-validation-for="ReasonForRepair"></span>
+        </div>
+    </div>
+
+    <h2>Утверждения ООИОТ</h2>
+
+    @if(User.IsInRole("ooiot"))
+    {
+        <input type="checkbox" class="medium" id="checkAll" />
+    }
+
+    <div class="form-check">
+
+        @if (User.IsInRole("ooito"))
+            @Html.CheckBoxFor(x => x.IsDepartment4Confirmed, new { @class = "medium" })
+        else
+            @Html.CheckBoxFor(x => x.IsDepartment4Confirmed, new { @class = "medium", @disabled = "disabled" })
+
+            <label class="form-check-label">4</label>
+        </div>
+
+        <div class="form-check">
+
+            @if (User.IsInRole("ooito"))
+            @Html.CheckBoxFor(x => x.IsDepartment5Confirmed, new { @class = "medium" })
+        else
+            @Html.CheckBoxFor(x => x.IsDepartment5Confirmed, new { @class = "medium", @disabled = "disabled" })
+
+            <label class="form-check-label">5</label>
+        </div>
+
+        <div class="form-check">
+
+            @if (User.IsInRole("ooito"))
+            @Html.CheckBoxFor(x => x.IsDepartment6Confirmed, new { @class = "medium" })
+        else
+            @Html.CheckBoxFor(x => x.IsDepartment6Confirmed, new { @class = "medium", @disabled = "disabled" })
+
+            <label class="form-check-label">6</label>
+        </div>
+
+        <div class="form-check">
+
+            @if (User.IsInRole("ooito"))
+            @Html.CheckBoxFor(x => x.IsDepartment13Confirmed, new { @class = "medium" })
+        else
+            @Html.CheckBoxFor(x => x.IsDepartment13Confirmed, new { @class = "medium", @disabled = "disabled" })
+
+            <label class="form-check-label">13</label>
+        </div>
+
+        <div class="form-check">
+
+            @if (User.IsInRole("ooito"))
+            @Html.CheckBoxFor(x => x.IsDepartment17Confirmed, new { @class = "medium" })
+        else
+            @Html.CheckBoxFor(x => x.IsDepartment17Confirmed, new { @class = "medium", @disabled = "disabled" })
+
+            <label class="form-check-label">17</label>
+        </div>
+
+        <div class="form-check">
+
+            @if (User.IsInRole("ooito"))
+            @Html.CheckBoxFor(x => x.IsDepartment80Confirmed, new { @class = "medium" })
+        else
+            @Html.CheckBoxFor(x => x.IsDepartment80Confirmed, new { @class = "medium", @disabled = "disabled" })
+
+            <label class="form-check-label">80</label>
+        </div>
+
+        <div class="form-check">
+
+            @if (User.IsInRole("ooito"))
+            @Html.CheckBoxFor(x => x.IsDepartment82Confirmed, new { @class = "medium" })
+        else
+            @Html.CheckBoxFor(x => x.IsDepartment82Confirmed, new { @class = "medium", @disabled = "disabled" })
+
+            <label class="form-check-label">82</label>
+        </div>
+
+     @if(User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+    {
+        <button type="submit" class="btn btn-success">Сохранить</button>
+    }
+        
+    </form>
+
+    <script>
+        $("#checkAll").click(function () {
+            $('input[name*="IsDepartment"]').not(this).prop('checked', this.checked);
+        });
+    </script>
+
+    <script>
+
+        $('#product').selectize({
+            valueField: 'code',
+            labelField: 'name',
+
+            score: function () { return function () { return 1; }; },
+
+            render: {
+                item: function (item, escape) {
+                    return (
+                        '<div>' +
+                        '<span class="name">' + item.name + '</span>' +
+                        '<span class="email">' + item.code + '</span>' +
+                        '</div>'
+                    );
+                },
+
+                option: function (item, escape) {
+
+                    return (
+                        '<div>' +
+                        '<span class="label">' + item.code + '</span>' +
+                        '<span class="caption">' + item.name + '</span>' +
+                        '</div>'
+                    );
+                },
+
+            },
+
+            load: function (query, callback) {
+                if (!query.length) return callback();
+                console.log(query);
+                var self = this;
+                $.ajax({
+                    url: encodeURI('/card/SearchProducts?query=' + query, true),
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        count: 100
+                    },
+                    error: function () {
+                        callback();
+                    },
+                    success: function (res) {
+                        self.clearOptions();
+                        callback(res);
+                    }
+                })
+            }
+        });
+
+
+        $("#order").selectize({
+            valueField: "order",
+            labelField: "cipher",
+            searchField: ["order", "cipher"],
+            respect_word_boundaries: false,
+
+            render: {
+                item: function (item, escape) {
+                    return (
+                        '<div>' +
+                        '<span class="name">' + item.cipher + '</span>' +
+                        '<span class="email">' + item.order + '</span>' +
+                        '</div>'
+                    );
+                },
+
+                option: function (item, escape) {
+
+                    return (
+                        '<div>' +
+                        '<span class="label">' + item.cipher + '</span>' +
+                        '<span class="caption">' + item.order + "</span>" +
+                        '</div>'
+                    );
+                },
+
+            }
+
+        });
+
+        $(document).ready(function () {
+            if ($("#product").val() != null) {
+                loadOrders();
+            }
+        });
+
+        $('#product').on('change', function () {
+            $("#order")[0].selectize.clear();
+            loadOrders();
+        });
+
+        async function loadOrders() {
+            const code = $('#product').val();
+
+            $("#order")[0].selectize.disable();
+
+            const response = await fetch('/card/searchorders?productCode=' + code);
+            var data = await response.json();
+
+            $("#order")[0].selectize.enable();
+
+            $("#order")[0].selectize.load(function (callback) { callback(data) });
+        }
+
+    </script>
+
+
+    <script>
+        $('#cards').selectize({
+            valueField: 'id',
+            labelField: 'number',
+
+            score: function () { return function () { return 1; }; },
+
+            render: {
+                item: function (item, escape) {
+                    return (
+                        '<div>' +
+                        '<span class="name">' + item.number + '</span>' +
+                        '</div>'
+                    );
+                },
+
+                option: function (item, escape) {
+
+                    return (
+                        '<div>' +
+                        '<span class="caption">' + item.number + '</span>' +
+                        '</div>'
+                    );
+                },
+
+            },
+
+            load: function (query, callback) {
+                if (!query.length) return callback();
+                console.log(query);
+                var self = this;
+                $.ajax({
+                    url: encodeURI('/Card/FindCards?query=' + query, true),
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        count: 100
+                    },
+                    error: function () {
+                        callback();
+                    },
+                    success: function (res) {
+                        self.clearOptions();
+                        callback(res);
+                    }
+                })
+            }
+        });
+    </script>
+
+    <script>
+        $('#cards2').selectize({
+            valueField: 'id',
+            labelField: 'number',
+
+            score: function () { return function () { return 1; }; },
+
+            render: {
+                item: function (item, escape) {
+                    return (
+                        '<div>' +
+                        '<span class="name">' + item.number + '</span>' +
+                        '</div>'
+                    );
+                },
+
+                option: function (item, escape) {
+
+                    return (
+                        '<div>' +
+                        '<span class="caption">' + item.number + '</span>' +
+                        '</div>'
+                    );
+                },
+
+            },
+
+            load: function (query, callback) {
+                if (!query.length) return callback();
+                console.log(query);
+                var self = this;
+                $.ajax({
+                    url: encodeURI('/Card/FindCards?query=' + query, true),
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        count: 100
+                    },
+                    error: function () {
+                        callback();
+                    },
+                    success: function (res) {
+                        self.clearOptions();
+                        callback(res);
+                    }
+                })
+            }
+        });
+    </script>

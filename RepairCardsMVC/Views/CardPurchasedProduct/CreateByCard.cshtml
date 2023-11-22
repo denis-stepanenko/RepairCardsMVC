@@ -1,0 +1,97 @@
+﻿@model CreateCardPurchasedProductByCardViewModel
+
+<a asp-action="Index"
+   asp-route-id="@ViewBag.CardId"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber">Назад</a>
+
+<h2>Добавить из другой карты</h2>
+
+<table id="cards" class="display">
+    <thead>
+        <tr>
+            <th>Номер</th>
+            <th>Децмальный номер</th>
+            <th>Наименование</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+<h2>ПКИ</h2>
+
+<input type="checkbox" class="medium" id="checkAll" />
+
+<form method="post">
+    <input name="CardId" value="@ViewBag.CardId" hidden/>
+
+    <span class="text-danger" asp-validation-for="Ids"></span>
+
+    <table id="products" class="display"></table>
+    <br />
+    <button class="btn btn-dark">Добавить</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#cards').DataTable(
+            {
+                ajax: {
+                    url: "/CardPurchasedProduct/GetCards",
+                    type: "POST",
+                },
+                processing: true,
+                serverSide: true,
+                filter: true,
+                columns: [
+                    { data: "number" },
+                    { data: "productCode" },
+                    { data: "productName" },
+                    {
+                        "render": function (data, type, row) { return "<a href='javascript:void(0);' onclick=calculate('" + row.id + "'); >Показать</a>"; }
+                    }
+                ]
+            }
+        );
+
+        $('#products').DataTable({
+            columns: [
+                {
+                    "render": function (data, type, row) { return ''; }
+                },
+                { data: 'code', name: "Code" },
+                { data: 'name', name: "Name" },
+                { data: 'count', name: "Count" },
+            ],
+        });
+    });
+
+    async function calculate(id) {
+        const response = await fetch("/CardPurchasedProduct/GetProductsByCard?cardId=" + id);
+        data = await response.json();
+
+        $('#products').DataTable({
+            destroy: true,
+            paging: false,
+            data: data,
+            columns: [
+                {
+
+                    "render": function (data, type, row) {
+                        return `<input type="checkbox" class="medium" name="ids" value="${row.id}"/>`;
+                    },
+                    "width": "5%"
+                },
+                { data: 'code', name: "Code" },
+                { data: 'name', name: "Name" },
+                { data: 'count', name: "Count" },
+            ],
+        });
+    }
+</script>
+
+<script>
+    $("#checkAll").click(function () {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+</script>

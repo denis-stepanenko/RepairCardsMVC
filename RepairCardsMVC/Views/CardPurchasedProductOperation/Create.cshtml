@@ -1,0 +1,134 @@
+﻿@model CreateCardPurchasedProductOperationViewModel
+
+<a asp-controller="CardPurchasedProduct"
+   asp-action="Edit"
+   asp-route-id="@ViewBag.ProductId"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardsFilter="@ViewBag.CardsFilter">
+    Назад
+</a>
+<br />
+
+<form method="post">
+    <input name="productId" value="@ViewBag.ProductId" hidden />
+    <input name="cardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="cardsFilter" value="@ViewBag.CardsFilter" hidden />
+
+    <button type="submit" class="btn btn-dark">Добавить</button><br />
+
+    <span>Маршрут:</span>
+    <br />
+    <b>@ViewBag.Route</b><br />
+
+    <div>
+        <span>Исполнитель:</span><br />
+        <select id="executor" asp-for="ExecutorId" placeholder="Поиск">
+            @if (ViewBag.Executor != null)
+            {
+                <option value="@ViewBag.Executor.Id">@ViewBag.Executor.Name</option>
+            }
+        </select>
+        <span class="text-danger" asp-validation-for="ExecutorId"></span>
+    </div>
+
+    <div>
+        <span>Дата:</span><br />
+        <input type="date" asp-for="Date" class="form-control" />
+        <span class="text-danger" asp-validation-for="Date"></span>
+    </div>
+
+    <span class="text-danger" asp-validation-for="Ids"></span>
+
+    <br/>
+    <input type="checkbox" class="medium" id="checkAll" />
+
+    <table id="myTable" class="display">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Код</th>
+                <th>Наименование</th>
+                <th>Трудоемкость</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in ViewBag.Items)
+            {
+                <tr>
+                    <td>
+                        <input class="medium" type="checkbox" name="ids" value="@item.Id" />
+                    </td>
+                    <td>@item.Code</td>
+                    <td>@item.Name</td>
+                    <td>@item.Labor</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({});
+    });
+</script>
+
+<script>
+    $('#executor').selectize({
+        valueField: 'id',
+        labelField: 'name',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="caption">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            console.log(query);
+            var self = this;
+            $.ajax({
+                url: encodeURI('/CardPurchasedProductOperation/FindExecutors?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+</script>
+
+<script>
+    $("#checkAll").click(function () {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+</script>

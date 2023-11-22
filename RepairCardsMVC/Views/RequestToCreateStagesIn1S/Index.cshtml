@@ -1,0 +1,218 @@
+﻿@model PaginatedList<RequestToCreateStagesIn1S>
+
+<h2>Заявки на создание этапов в 1С</h2>
+
+<form method="get">
+    <div class="input-group">
+        <input type="text" name="filter" class="form-control rounded" placeholder="Поиск" aria-label="Search" aria-describedby="search-addon"
+               value="@ViewBag.Filter" />
+
+        <input type="submit" class="btn btn-outline-primary" value="Найти" />
+    </div>
+</form>
+
+@if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+{
+    <h2 class="mt-4">Добавить заявку</h2>
+
+    <form method="post">
+        <input name="Filter" value="@ViewBag.Filter" hidden />
+        <input name="PageNumber" value="@ViewBag.PageNumber" hidden />
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Карта</label>
+            <div class="col-sm-10">
+                <select id="card" placeholder="Поиск" name="Id"></select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-dark mb-4 float-end">Добавить</button>
+    </form>
+}
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th width="300px">Номер карты</th>
+            <th>Цех</th>
+            <th>Заказчик</th>
+            <th>Исполнитель</th>
+            <th>Дата</th>
+            <th>Дата закрытия</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="@(item.CloseDate != null ? "table-success" : "table-warning")">
+                <td>@item.CardNumber</td>
+                <td>@item.Department</td>
+                <td>@item.CustomerName</td>
+                <td>@item.ExecutorName</td>
+                <td>@item.Date</td>
+                <td>@item.CloseDate</td>
+                <td>
+                    @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+                    {
+                        <a class="btn btn-success"
+                   asp-action="CloseApplication"
+                   asp-route-id="@item.Id"
+                   asp-route-pageNumber="@ViewBag.PageNumber"
+                   asp-route-filter="@ViewBag.Filter">Закрыть</a>
+
+                        <a class="btn btn-warning"
+                   asp-action="CancelApplicationClosing"
+                   asp-route-id="@item.Id"
+                   asp-route-pageNumber="@ViewBag.PageNumber"
+                   asp-route-filter="@ViewBag.Filter">Отменить закрытие</a>
+
+                        <a class="btn btn-danger"
+                   asp-action="Delete"
+                   asp-route-id="@item.Id"
+                   asp-route-pageNumber="@ViewBag.PageNumber"
+                   asp-route-filter="@ViewBag.Filter">Удалить</a>
+                    }
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination justify-content-center">
+        @{
+            int page = ViewBag.PageNumber;
+            int count = Model.TotalPages;
+            int countOfVisiblePages = 15;
+
+            int start = Math.Min(Math.Max(1, page - 2), count - countOfVisiblePages);
+            int end = Math.Min(start + countOfVisiblePages, count);
+
+            bool showFirstPage = start > 1;
+            bool showLastPage = end < count;
+
+            if (count <= countOfVisiblePages)
+            {
+                start = 1;
+                end = count;
+                showFirstPage = false;
+                showLastPage = false;
+            }
+
+            <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-pageNumber="@(ViewBag.PageNumber - 1)"
+               asp-route-filter="@ViewBag.Filter">Назад</a>
+            </li>
+
+            if (showFirstPage)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-pageNumber="1"
+               asp-route-filter="@ViewBag.Filter">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            }
+
+            for (int i = start; i <= end; i++)
+            {
+                if (page != i)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+               asp-route-pageNumber="@i"
+               asp-route-filter="@ViewBag.Filter">@i</a>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">@i</a>
+                    </li>
+                }
+            }
+
+            if (showLastPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-pageNumber="@count"
+               asp-route-filter="@ViewBag.Filter">@count</a>
+                </li>
+
+            }
+
+            <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
+               asp-route-filter="@ViewBag.Filter">Вперед</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+<script>
+
+    $('#card').selectize({
+        valueField: 'id',
+        labelField: 'number',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.number + '</span>' +
+                    '<span class="email">' + item.productCode + '</span>' +
+                    '<span class="email">' + item.productName + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="label">' + item.number + '</span>' +
+                    '<span class="caption">' + item.productCode + '</span>' +
+                    '<span class="caption">' + item.productName + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            console.log(query);
+            var self = this;
+            $.ajax({
+                url: encodeURI('/ExportRequest/SearchCards?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+
+</script>

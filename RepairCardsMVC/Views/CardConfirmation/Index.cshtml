@@ -1,0 +1,59 @@
+﻿@model List<CardConfirmation>
+
+<a asp-controller="Card"
+   asp-action="Edit"
+   asp-route-id="@ViewBag.CardId"
+   asp-route-filter="@ViewBag.CardsFilter"
+   asp-route-pageNumber="@ViewBag.CardsPageNumber">Назад</a>
+
+@if (User.IsInAnyRole("tb", "ooiot", "otk", "prb", "vp"))
+{
+    <form asp-action="Create">
+        <div style="margin-top:10px;">
+            <input name="CardId" value="@ViewBag.CardId" hidden />
+            <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+            <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+
+            <select name="confirmationObjectId" asp-items="@ViewBag.ConfirmationObjects" size="6" style="float:left;"></select>
+            <button class="btn btn-dark">Добавить</button>
+        </div>
+    </form>
+}
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Пользователь</th>
+            <th>Роль</th>
+            <th>Область</th>
+            <th>Дата</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UserName</td>
+                <td>@item.UserRole.Name</td>
+                <td>@item.CardConfirmationObject.Name</td>
+                <td>@item.Date</td>
+                <td>
+                    @if (User.IsInAnyRole("tb", "ooiot", "otk", "prb", "vp"))
+                    {
+                        <a asp-action="Delete"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter"
+                           class="btn btn-danger">Удалить</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

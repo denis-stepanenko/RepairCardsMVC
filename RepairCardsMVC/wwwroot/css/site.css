@@ -1,0 +1,54 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.selectize-control .selectize-input > div .email {
+    opacity: 0.8;
+}
+
+.selectize-control .selectize-input > div .name + .email {
+    margin-left: 5px;
+}
+
+.selectize-control .selectize-input > div .email:before {
+    content: "<";
+}
+
+.selectize-control .selectize-input > div .email:after {
+    content: ">";
+}
+
+.selectize-control .selectize-dropdown .caption {
+    font-size: 12px;
+    display: block;
+    color: #a0a0a0;
+}
+
+input.larger {
+    transform: scale(3);
+    margin: 30px;
+}
+
+input.medium {
+    transform: scale(2);
+    margin: 3px;
+}

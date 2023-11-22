@@ -1,0 +1,207 @@
+﻿@model CreateTemplateOperationViewModel
+
+<a asp-action="Index"
+   asp-route-id="@ViewBag.Id"
+   asp-route-templatesFilter="@ViewBag.TemplatesFilter"
+   asp-route-templatesPageNumber="@ViewBag.TemplatesPageNumber"
+   asp-route-templateOperationsFilter="@ViewBag.TemplateOperationsFilter"
+   asp-route-templateOperationsPageNumber="@ViewBag.TemplateOperationsPageNumber">Назад</a>
+
+<h2>Выбор операций</h2>
+
+<form method="get">
+    <div class="input-group">
+        <input type="text"
+               class="form-control rounded"
+               placeholder="Поиск"
+               aria-label="Search"
+               aria-describedby="search-addon"
+               name="operationsFilter"
+               value="@ViewBag.OperationsFilter" />
+
+        <input name="TemplateId" value="@ViewBag.TemplateId" hidden />
+        <input name="TemplatesPageNumber" value="@ViewBag.TemplatesPageNumber" hidden />
+        <input name="TemplatesFilter" value="@ViewBag.TemplatesFilter" hidden />
+        <input name="TemplateOperationsPageNumber" value="@ViewBag.TemplateOperationsPageNumber" hidden />
+        <input name="TemplateOperationsFilter" value="@ViewBag.TemplateOperationsFilter" hidden />
+
+        <input type="submit" class="btn btn-outline-primary" value="Найти" />
+    </div>
+</form>
+
+<form method="post">
+    <input name="TemplateId" value="@ViewBag.TemplateId" hidden />
+    <input name="TemplatesPageNumber" value="@ViewBag.TemplatesPageNumber" hidden />
+    <input name="TemplatesFilter" value="@ViewBag.TemplatesFilter" hidden />
+    <input name="TemplateOperationsPageNumber" value="@ViewBag.TemplateOperationsPageNumber" hidden />
+    <input name="TemplateOperationsFilter" value="@ViewBag.TemplateOperationsFilter" hidden />
+
+    <button type="submit" class="btn btn-dark">Добавить</button><br />
+
+    <span>Количество</span>
+    <input class="form-control" type="number" asp-for="Count" />
+
+    <div>
+        <span class="text-danger" asp-validation-for="Count"></span>
+    </div>
+
+    <div>
+        <span class="text-danger" asp-validation-for="Ids"></span>
+    </div>
+
+    <input type="checkbox" class="medium" id="selectDeselectCheckbox" />
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th></th>
+                <th>Код</th>
+                <th>Наименование</th>
+                <th>Трудоемкость</th>
+                <th>Цена</th>
+                <th>Группа</th>
+                <th>Цех</th>
+                <th>Единица измерения</th>
+                <th>Описание</th>
+                <th>Не используется</th>
+                <th>Код производственной операции</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in ViewBag.Items)
+            {
+                <tr>
+                    <td><input type="checkbox" name="Ids" class="medium" value="@item.Id" /></td>
+                    <td>@item.Code</td>
+                    <td>@item.Name</td>
+                    <td>@item.Labor</td>
+                    <td>@item.Price</td>
+                    <td>@item.GroupName</td>
+                    <td>@item.Department</td>
+                    <td>@item.UnitName</td>
+                    <td>@item.Description</td>
+                    <td>@item.IsInactive</td>
+                    <td>@item.ProductionOperationCode</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</form>
+
+<script>
+    $("#selectDeselectCheckbox").on("click", function () {
+
+        var elements = document.getElementsByName('selectedItems');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].checked = $("#selectDeselectCheckbox").is(":checked");
+        }
+
+    });
+</script>
+
+<nav>
+    <ul class="pagination justify-content-center">
+        @{
+            int page = ViewBag.OperationsPageNumber;
+            int count = ViewBag.Items.TotalPages;
+            int countOfVisiblePages = 15;
+
+            int start = Math.Min(Math.Max(1, page - 2), count - countOfVisiblePages);
+            int end = Math.Min(start + countOfVisiblePages, count);
+
+            bool showFirstPage = start > 1;
+            bool showLastPage = end < count;
+
+            if (count <= countOfVisiblePages)
+            {
+                start = 1;
+                end = count;
+                showFirstPage = false;
+                showLastPage = false;
+            }
+
+            <li class="page-item @(!ViewBag.Items.HasPreviousPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-id="@ViewBag.Id"
+               asp-route-templatesPageNumber="@ViewBag.TemplatesPageNumber"
+               asp-route-templatesFilter="@ViewBag.TemplatesFilter"
+               asp-route-templateOperationsPageNumber="@ViewBag.TemplateOperationsPageNumber"
+               asp-route-templateOperationsFilter="@ViewBag.TemplateOperationsFilter"
+               asp-route-operationsPageNumber="@(ViewBag.OperationsPageNumber - 1)"
+               asp-route-operationsFilter="@ViewBag.OperationsFilter">Назад</a>
+            </li>
+
+            if (showFirstPage)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-id="@ViewBag.Id"
+               asp-route-templatesPageNumber="@ViewBag.TemplatesPageNumber"
+               asp-route-templatesFilter="@ViewBag.TemplatesFilter"
+               asp-route-templateOperationsPageNumber="@ViewBag.TemplateOperationsPageNumber"
+               asp-route-templateOperationsFilter="@ViewBag.TemplateOperationsFilter"
+               asp-route-operationsPageNumber="1"
+               asp-route-operationsFilter="@ViewBag.OperationsFilter">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            }
+
+            for (int i = start; i <= end; i++)
+            {
+                if (page != i)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+               asp-route-id="@ViewBag.Id"
+               asp-route-templatesPageNumber="@ViewBag.TemplatesPageNumber"
+               asp-route-templatesFilter="@ViewBag.TemplatesFilter"
+               asp-route-templateOperationsPageNumber="@ViewBag.TemplateOperationsPageNumber"
+               asp-route-templateOperationsFilter="@ViewBag.TemplateOperationsFilter"
+               asp-route-operationsPageNumber="@i"
+               asp-route-operationsFilter="@ViewBag.OperationsFilter">@i</a>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">@i</a>
+                    </li>
+                }
+            }
+
+            if (showLastPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-id="@ViewBag.Id"
+               asp-route-templatesPageNumber="@ViewBag.TemplatesPageNumber"
+               asp-route-templatesFilter="@ViewBag.TemplatesFilter"
+               asp-route-templateOperationsPageNumber="@ViewBag.TemplateOperationsPageNumber"
+               asp-route-templateOperationsFilter="@ViewBag.TemplateOperationsFilter"
+               asp-route-operationsPageNumber="@count"
+               asp-route-operationsFilter="@ViewBag.OperationsFilter">@count</a>
+                </li>
+
+            }
+
+            <li class="page-item @(!ViewBag.Items.HasNextPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-id="@ViewBag.Id"
+               asp-route-templatesPageNumber="@ViewBag.TemplatesPageNumber"
+               asp-route-templatesFilter="@ViewBag.TemplatesFilter"
+               asp-route-templateOperationsPageNumber="@ViewBag.TemplateOperationsPageNumber"
+               asp-route-templateOperationsFilter="@ViewBag.TemplateOperationsFilter"
+               asp-route-operationsPageNumber="@(ViewBag.OperationsPageNumber + 1)"
+               asp-route-operationsFilter="@ViewBag.OperationsFilter">Вперед</a>
+            </li>
+        }
+    </ul>
+</nav>

@@ -1,0 +1,86 @@
+﻿@model Request
+
+<a asp-action="Index"
+   asp-route-filter="@ViewBag.Filter"
+   asp-route-pageNumber="@ViewBag.PageNumber">Назад</a>
+
+<h2 class="mb-4">Удалить заявку</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Цех</dt>
+    <dd class="col-sm-9">@Model.Department</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Дата</dt>
+    <dd class="col-sm-9">@Model.Date</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Номер карты</dt>
+    <dd class="col-sm-9">@Model.CardNumber</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Децимальный номер</dt>
+    <dd class="col-sm-9">@Model.ProductCode</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Наименование</dt>
+    <dd class="col-sm-9">@Model.ProductName</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Заводской номер</dt>
+    <dd class="col-sm-9">@Model.ProductFactoryNumber</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Тип ремонта</dt>
+    <dd class="col-sm-9">@Model.RepairType?.Name</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Заказ</dt>
+    <dd class="col-sm-9">@Model.ShortOrder</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Номер контракта</dt>
+    <dd class="col-sm-9">@Model.ContractNumber</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Ремонтный децимальный номер</dt>
+    <dd class="col-sm-9">@Model.RepairCode</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Наименование</dt>
+    <dd class="col-sm-9">@Model.RepairName</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Заказ</dt>
+    <dd class="col-sm-9">@Model.RepairOrder</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Группа направления деятельности</dt>
+    <dd class="col-sm-9">@Model.RepairDirection</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-3">Направление деятельности</dt>
+    <dd class="col-sm-9">@Model.RepairCipher</dd>
+</dl>
+
+<form method="post">
+    <input name="Filter" value="@ViewBag.Filter" hidden />
+    <input name="PageNumber" value="@ViewBag.PageNumber" hidden />
+    
+    <input asp-for="Id" hidden />
+
+    <button type="submit" class="btn btn-danger">Удалить</button>
+</form>

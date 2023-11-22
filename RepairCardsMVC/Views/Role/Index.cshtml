@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model List<IdentityRole>
+
+<h2>Роли</h2>
+
+<a class="btn btn-dark" asp-action="Create">Создать роль</a>
+
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th>Наименование</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,230 @@
+﻿@model PaginatedList<CardMaterial>
+
+<a asp-controller="Card"
+   asp-action="Edit"
+   asp-route-id="@ViewBag.CardId"
+   asp-route-filter="@ViewBag.CardsFilter"
+   asp-route-pageNumber="@ViewBag.CardsPageNumber">Назад</a>
+
+<h2>Материалы</h2>
+
+<form method="get">
+    <div class="input-group">
+        <input type="text"
+               class="form-control rounded"
+               placeholder="Поиск"
+               aria-label="Search"
+               aria-describedby="search-addon"
+               name="CardMaterialsFilter"
+               value="@ViewBag.CardMaterialsFilter" />
+
+        <input name="CardId" value="@ViewBag.CardId" hidden />
+        <input name="cardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+        <input name="cardsFilter" value="@ViewBag.CardsFilter" hidden />
+
+        <input type="submit" class="btn btn-outline-primary" value="Найти" />
+    </div>
+</form>
+
+@if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+{
+    <div>
+        <a class="btn btn-dark"
+       asp-action="Create"
+       asp-route-cardId="@ViewBag.CardId"
+       asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+       asp-route-cardsFilter="@ViewBag.CardsFilter"
+       asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber"
+       asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter">Добавить</a>
+
+        <a class="btn btn-dark"
+       asp-action="CreateByProduct"
+       asp-route-cardId="@ViewBag.CardId"
+       asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+       asp-route-cardsFilter="@ViewBag.CardsFilter"
+       asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber"
+       asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter">Добавить по ДСЕ</a>
+
+        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#createByAllProductsInCard">
+            Добавить по всем ДСЕ в карте
+        </button>
+
+        <div class="modal fade" id="createByAllProductsInCard" tabindex="-1" aria-labelledby="createByAllProductsInCardModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createByAllProductsInCardModalLabel">Внимание</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                        <div class="modal-body">
+                        В список материалов будут добавлены материалы, которые идут на все ДСЕ в карте. Продолжить?<br />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                            <a class="btn btn-dark"
+                           asp-action="CreateByAllProductsInCard"
+                           asp-route-cardId="@ViewBag.CardId"
+                           asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                           asp-route-cardsFilter="@ViewBag.CardsFilter"
+                           asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber"
+                           asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter">Продолжить</a>
+                        </div>
+
+                </div>
+            </div>
+        </div>
+
+        <a class="btn btn-dark"
+       asp-action="CreateByCard"
+       asp-route-cardId="@ViewBag.CardId"
+       asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+       asp-route-cardsFilter="@ViewBag.CardsFilter"
+       asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber"
+       asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter">Добавить из другой карты</a>
+    </div>
+}
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Код</th>
+            <th>Наименование</th>
+            <th>Размер</th>
+            <th>Тип</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th>Цех</th>
+            <th width="250px"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Code</td>
+                <td>@item.Name</td>
+                <td>@item.Size</td>
+                <td>@item.Type</td>
+                <td>@item.Count</td>
+                <td>@item.Price</td>
+                <td>@item.Department</td>
+                <td>
+                    @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+                    {
+                        <a class="btn btn-success"
+                   asp-action="Edit"
+                   asp-route-id="@item.Id"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter"
+                   asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber"
+                   asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter">Изменить</a>
+
+                        <a class="btn btn-danger"
+                   asp-action="Delete"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@item.CardId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter"
+                   asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber"
+                   asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter">Удалить</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination justify-content-center">
+        @{
+            int page = ViewBag.CardMaterialsPageNumber;
+            int count = Model.TotalPages;
+            int countOfVisiblePages = 15;
+
+            int start = Math.Min(Math.Max(1, page - 2), count - countOfVisiblePages);
+            int end = Math.Min(start + countOfVisiblePages, count);
+
+            bool showFirstPage = start > 1;
+            bool showLastPage = end < count;
+
+            if (count <= countOfVisiblePages)
+            {
+                start = 1;
+                end = count;
+                showFirstPage = false;
+                showLastPage = false;
+            }
+
+            <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardMaterialsPageNumber="@(ViewBag.CardMaterialsPageNumber - 1)"
+               asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter">Назад</a>
+            </li>
+
+            if (showFirstPage)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardMaterialsPageNumber="1"
+               asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            }
+
+            for (int i = start; i <= end; i++)
+            {
+                if (page != i)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardMaterialsPageNumber="@i"
+               asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter">@i</a>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">@i</a>
+                    </li>
+                }
+            }
+
+            if (showLastPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardMaterialsPageNumber="@count"
+               asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter">@count</a>
+                </li>
+            }
+
+            <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardMaterialsPageNumber="@(ViewBag.CardMaterialsPageNumber + 1)"
+               asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter">Вперед</a>
+            </li>
+        }
+    </ul>
+</nav>

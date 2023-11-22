@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "select2@4.0.13",
+      "destination": "wwwroot/lib/select2/"
+    },
+    {
+      "library": "selectize.js@0.15.2",
+      "destination": "wwwroot/lib/selectize.js/"
+    },
+    {
+      "library": "toastify-js@1.12.0",
+      "destination": "wwwroot/lib/toastify-js/"
+    }
+  ,
+{
+  "provider": "cdnjs",
+  "library": "datatables@1.10.21",
+  "destination": "wwwroot/lib/datatables/"
+}
+,
+{
+  "provider": "cdnjs",
+  "library": "jquery@3.7.1",
+  "destination": "wwwroot/lib/jquery/"
+}
+]
+}

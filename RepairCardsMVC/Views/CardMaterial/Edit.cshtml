@@ -1,0 +1,49 @@
+﻿@model EditCardMaterialViewModel
+
+<a asp-action="Index"
+   asp-route-cardId="@ViewBag.Item.CardId"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter"
+   asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber">Назад</a>
+
+<form method="post">
+    <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+    <input name="CardMaterialsPageNumber" value="@ViewBag.CardMaterialsPageNumber" hidden />
+    <input name="CardMaterialsFilter" value="@ViewBag.CardMaterialsFilter" hidden />
+    
+    <input name="Id" value="@ViewBag.Item.Id" hidden />
+    <input name="CardId" value="@ViewBag.Item.CardId" hidden />
+
+    <dl class="row">
+        <dt class="col-sm-3">Код</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Code</dd>
+
+        <dt class="col-sm-3">Наименование</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Name</dd>
+
+        <dt class="col-sm-3">Размер</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Size</dd>
+
+        <dt class="col-sm-3">Тип</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Type</dd>
+
+        <dt class="col-sm-3">Цена</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Price</dd>
+
+        <dt class="col-sm-3">Цех</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Department</dd>
+
+        <dt class="col-sm-3">Количество</dt>
+        <dd class="col-sm-9">
+            <input asp-for="Count" type="number" />
+            <div>
+                <span class="text-danger" asp-validation-for="Count"></span>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit" class="btn btn-dark">Сохранить</button>
+
+</form>

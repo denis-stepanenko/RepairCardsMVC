@@ -1,0 +1,75 @@
+﻿<nav>
+    <ul class="pagination justify-content-center">
+        @{
+            int page = Convert.ToInt32(TempData.Peek("pageNumber"));
+            int count = Model.TotalPages;
+            int countOfVisiblePages = 15;
+
+            int start = Math.Min(Math.Max(1, page - 2), count - countOfVisiblePages);
+            int end = Math.Min(start + countOfVisiblePages, count);
+
+            bool showFirstPage = start > 1;
+            bool showLastPage = end < count;
+
+            if (count <= countOfVisiblePages)
+            {
+                start = 1;
+                end = count;
+                showFirstPage = false;
+                showLastPage = false;
+            }
+
+            <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageNumber - 1)"
+               asp-route-filter="@TempData.Peek("filter")"
+               class="page-link">Previous</a>
+            </li>
+
+            if (showFirstPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index" asp-route-pageNumber="1" asp-route-filter="@TempData.Peek("filter")">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            }
+
+            for (int i = start; i <= end; i++)
+            {
+                if (page != i)
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Index" asp-route-pageNumber="@i" asp-route-filter="@TempData.Peek("filter")">@i</a>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">@i</a>
+                    </li>
+                }
+            }
+
+            if (showLastPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index" asp-route-pageNumber="@count" asp-route-filter="@TempData.Peek("filter")">@count</a>
+                </li>
+
+            }
+
+            <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PageNumber + 1)"
+               asp-route-filter="@TempData.Peek("filter")"
+               class="page-link">Next</a>
+            </li>
+        }
+    </ul>
+</nav>

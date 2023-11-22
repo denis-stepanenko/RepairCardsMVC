@@ -1,0 +1,165 @@
+﻿@model Request
+
+<a asp-action="Index"
+   asp-route-filter="@ViewBag.Filter"
+   asp-route-pageNumber="@ViewBag.PageNumber">Назад</a>
+
+<h2>Изменить заявку</h2>
+
+<form method="post">
+    <input name="Filter" value="@ViewBag.Filter" hidden />
+    <input name="PageNumber" value="@ViewBag.PageNumber" hidden />
+    
+    <input asp-for="Id" hidden />
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Цех</label>
+        <div class="col-sm-10">
+            <select class="form-control" asp-for="Department">
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="13">13</option>
+                <option value="17">17</option>
+                <option value="80">80</option>
+                <option value="82">82</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Карта</label>
+        <div class="col-sm-10">
+            <select id="card" placeholder="Поиск" asp-for="CardNumber">
+                @if (Model?.CardNumber != null)
+                {
+                    <option value="@Model.CardNumber">@Model.ProductName</option>
+                }
+            </select>
+            <span class="text-danger" asp-validation-for="CardNumber"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Заводской номер</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="ProductFactoryNumber">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Заказ</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="ShortOrder">
+        </div>
+    </div>
+
+    <h2>СКИЭ</h2>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Номер контракта</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="ContractNumber">
+        </div>
+    </div>
+
+    <h2>СКБ</h2>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Ремонтный децимальный номер</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="RepairCode">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Ремонтное наименование</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="RepairName">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Ремонтный заказ</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="RepairOrder">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Группа направления деятельности</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="RepairDirection">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Направление деятельности</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="RepairCipher">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Тип ремонта</label>
+        <div class="col-sm-10">
+            <select class="form-select" asp-for="RepairTypeId" asp-items="@ViewBag.Types"></select>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Сохранить</button>
+</form>
+
+<script>
+
+    $('#card').selectize({
+        valueField: 'number',
+        labelField: 'productName',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.number + '</span>' +
+                    '<span class="email">' + item.productName + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="label">' + item.number + '</span>' +
+                    '<span class="caption">' + item.productName + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            console.log(query);
+            var self = this;
+            $.ajax({
+                url: encodeURI('/ExportRequest/SearchCards?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+
+</script>

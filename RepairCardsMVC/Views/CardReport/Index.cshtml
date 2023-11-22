@@ -1,0 +1,231 @@
+﻿@model CardReportViewModel
+
+<a asp-controller="Card"
+   asp-action="Edit"
+   asp-route-id="@Model.CardId"
+   asp-route-filter="@Model.CardsFilter"
+   asp-route-pageNumber="@Model.CardsPageNumber">Назад</a>
+
+<h2>Отчеты</h2>
+
+<a asp-action="GetMilitaryRepairReport" asp-route-id="@Model.CardId" asp-route-format="pdf" target="_blank">Военный ремонт</a>
+(
+<a asp-action="GetMilitaryRepairReport" asp-route-id="@Model.CardId" asp-route-format="docx">DOCX</a>
+
+<a asp-action="GetMilitaryRepairReport" asp-route-id="@Model.CardId" asp-route-format="xlsx">XLSX</a>
+)
+<br />
+
+<a asp-action="GetCivilianRepairReport" asp-route-id="@Model.CardId" asp-route-format="pdf" target="_blank">Гражданский ремонт</a>
+(
+<a asp-action="GetCivilianRepairReport" asp-route-id="@Model.CardId" asp-route-format="docx">DOCX</a>
+
+<a asp-action="GetCivilianRepairReport" asp-route-id="@Model.CardId" asp-route-format="xlsx">XLSX</a>
+)
+<br />
+
+<a asp-action="GetCertificateOfRepairReport" asp-route-id="@Model.CardId" asp-route-format="pdf" target="_blank">Свидетельство о ремонте</a>
+(
+<a asp-action="GetCertificateOfRepairReport" asp-route-id="@Model.CardId" asp-route-format="docx">DOCX</a>
+
+<a asp-action="GetCertificateOfRepairReport" asp-route-id="@Model.CardId" asp-route-format="xlsx">XLSX</a>
+)
+<br />
+
+<a asp-action="GetMilitaryRepairWithoutOrderReport" asp-route-id="@Model.CardId" asp-route-format="pdf" target="_blank">Военный ремонт без заказа</a>
+(
+<a asp-action="GetMilitaryRepairWithoutOrderReport" asp-route-id="@Model.CardId" asp-route-format="docx">DOCX</a>
+
+<a asp-action="GetMilitaryRepairWithoutOrderReport" asp-route-id="@Model.CardId" asp-route-format="xlsx">XLSX</a>
+)
+<br />
+
+<a asp-action="GetCivilianRepairWithoutOrderReport" asp-route-id="@Model.CardId" asp-route-format="pdf" target="_blank">Гражданский ремонт без заказа</a>
+(
+<a asp-action="GetCivilianRepairWithoutOrderReport" asp-route-id="@Model.CardId" asp-route-format="docx">DOCX</a>
+
+<a asp-action="GetCivilianRepairWithoutOrderReport" asp-route-id="@Model.CardId" asp-route-format="xlsx">XLSX</a>
+)
+<br />
+
+<a asp-action="GetExecutedWorksReport" asp-route-id="@Model.CardId" asp-route-format="pdf" target="_blank">Выполненные работы</a>
+(
+<a asp-action="GetExecutedWorksReport" asp-route-id="@Model.CardId" asp-route-format="docx">DOCX</a>
+
+<a asp-action="GetExecutedWorksReport" asp-route-id="@Model.CardId" asp-route-format="xlsx">XLSX</a>
+)
+<br />
+
+<a asp-action="GetExecutedWorksForAssemblyDepartmentsReport" asp-route-id="@Model.CardId" asp-route-format="pdf" target="_blank">Выполненные работы для сборочных цехов</a>
+(
+<a asp-action="GetExecutedWorksForAssemblyDepartmentsReport" asp-route-id="@Model.CardId" asp-route-format="docx">DOCX</a>
+
+<a asp-action="GetExecutedWorksForAssemblyDepartmentsReport" asp-route-id="@Model.CardId" asp-route-format="xlsx">XLSX</a>
+)
+<br />
+
+<h3>Операции</h3>
+
+<form method="get" asp-action="GetOperationsReport" target="_blank">
+    <input name="id" value="@Model.CardId" hidden />
+
+    <select name="format" class="form-select">
+        <option value="pdf">PDF</option>
+        <option value="docx">DOCX</option>
+        <option value="xlsx">XLSX</option>
+    </select>
+
+    <select name="type" class="form-select" id="operationsReportType">
+        <option value="extracted">Демонтированные</option>
+        <option value="installed">Установленные</option>
+    </select>
+
+    <button type="submit" class="btn btn-dark" id="showOperationsButton">Показать</button>
+</form>
+
+<script>
+    $('#showOperationsButton').on('click', function () {
+        let type = $('#operationsReportType').val();
+
+        fetch('/CardReport/GetUnconfirmedCards?id=@Model.CardId&type=' + type)
+            .then(response => response.text())
+            .then(result => {
+                if (result != '')
+                    alert(result);
+            });
+    });
+</script>
+
+<h3>Материалы</h3>
+
+<form method="get" asp-action="GetMaterialsReport" target="_blank">
+    <input name="id" value="@Model.CardId" hidden />
+
+    <select name="format" class="form-select">
+        <option value="pdf">PDF</option>
+        <option value="docx">DOCX</option>
+        <option value="xlsx">XLSX</option>
+    </select>
+
+    <select name="type" class="form-select" id="materialsReportType">
+        <option value="extracted">Демонтированные</option>
+        <option value="installed">Установленные</option>
+    </select>
+
+    <button type="submit" class="btn btn-dark" id="showMaterialsButton">Показать</button>
+</form>
+
+<script>
+    $('#showMaterialsButton').on('click', function () {
+        let type = $('#materialsReportType').val();
+
+        fetch('/CardReport/GetUnconfirmedCards?id=@Model.CardId&type=' + type)
+            .then(response => response.text())
+            .then(result => {
+                if (result != '')
+                    alert(result);
+            });
+    });
+</script>
+
+<h3>Продукты</h3>
+
+<form method="get" asp-action="GetProductsReport" target="_blank">
+    <input name="id" value="@Model.CardId" hidden />
+
+    <select name="format" class="form-select">
+        <option value="pdf">PDF</option>
+        <option value="docx">DOCX</option>
+        <option value="xlsx">XLSX</option>
+    </select>
+
+    <select name="type" class="form-select" id="productsReportType">
+        <option value="extracted">Демонтированные</option>
+        <option value="installed">Установленные</option>
+    </select>
+
+    <button type="submit" class="btn btn-dark" id="showProductsButton">Показать</button>
+</form>
+
+<script>
+    $('#showProductsButton').on('click', function () {
+        let type = $('#productsReportType').val();
+
+        fetch('/CardReport/GetUnconfirmedCards?id=@Model.CardId&type=' + type)
+            .then(response => response.text())
+            .then(result => {
+                if (result != '')
+                    alert(result);
+            });
+    });
+</script>
+
+<h3>Сводная ведомость</h3>
+
+<form method="get" asp-action="GetConsolidatedStatementReport" target="_blank">
+    <input name="id" value="@Model.CardId" hidden />
+
+    <select name="coefficientId" class="form-select">
+        @foreach (var coefficient in Model.Coefficients)
+        {
+            <option value="@coefficient.Id">@($"4 - {coefficient.Department4}, 5 - {coefficient.Department5}, 6 - {coefficient.Department6}, 13 - {coefficient.Department13}, 17 - {coefficient.Department17}, 80 - {coefficient.Department80}, 82 - {coefficient.Department82}, 90 - {coefficient.Department90} from {coefficient.Date.ToString("dd.MM.yyyy")}")</option>
+        }
+    </select>
+
+    <select name="format" class="form-select">
+        <option value="pdf">PDF</option>
+        <option value="docx">DOCX</option>
+        <option value="xlsx">XLSX</option>
+    </select>
+
+    <select name="type" class="form-select" id="consolidatedStatementReportType">
+        <option value="extracted">Демонтированные</option>
+        <option value="installed">Установленные</option>
+    </select>
+
+    <label>Гражданская цена</label>
+    <input type="number" name="civilianPrice" value="264.17" />
+    <label>Военная цена</label>
+    <input type="number" name="militaryPrice" value="339.71" /><br />
+
+    <button type="submit" class="btn btn-dark" id="showConsolidatedStatementButton">Показать</button>
+</form>
+
+<script>
+    $('#showConsolidatedStatementButton').on('click', function () {
+        let type = $('#consolidatedStatementReportType').val();
+
+        fetch('/CardReport/GetUnconfirmedCards?id=@Model.CardId&type=' + type)
+            .then(response => response.text())
+            .then(result => {
+                if (result != '')
+                    alert(result);
+            });
+    });
+</script>
+
+<h3>Акт</h3>
+
+<form method="get" asp-action="GetActReport" target="_blank">
+    <input name="id" value="@Model.CardId" hidden />
+
+    <select name="coefficientId" class="form-select">
+        @foreach (var coefficient in Model.Coefficients)
+        {
+            <option value="@coefficient.Id">@($"4 - {coefficient.Department4}, 5 - {coefficient.Department5}, 6 - {coefficient.Department6}, 13 - {coefficient.Department13}, 17 - {coefficient.Department17}, 80 - {coefficient.Department80}, 82 - {coefficient.Department82}, 90 - {coefficient.Department90} from {coefficient.Date.ToString("dd.MM.yyyy")}")</option>
+        }
+    </select>
+
+    <select name="format" class="form-select">
+        <option value="pdf">PDF</option>
+        <option value="docx">DOCX</option>
+        <option value="xlsx">XLSX</option>
+    </select>
+
+    <label>Гражданская цена</label>
+    <input type="number" name="civilianPrice" value="264.17" />
+    <label>Военная цена</label>
+    <input type="number" name="militaryPrice" value="339.71" /><br />
+
+    <button type="submit" class="btn btn-dark">Показать</button>
+</form>

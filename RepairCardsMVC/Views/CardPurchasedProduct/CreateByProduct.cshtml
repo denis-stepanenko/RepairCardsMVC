@@ -1,0 +1,129 @@
+﻿@model CreateCardPurchasedProductByProductViewModel
+
+<a asp-action="Index"
+   asp-route-id="@ViewBag.CardId"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber">Назад</a>
+
+<h2>Добавить из продукта</h2>
+
+<table id="products" class="display">
+    <thead>
+        <tr>
+            <th>Децимальный номер</th>
+            <th>Наименование</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+<h2>ПКИ</h2>
+
+<input type="checkbox" class="medium" id="checkAll" />
+
+<table id="materials" class="display"></table>
+<br />
+<button id="addButton" class="btn btn-dark">Добавить</button>
+
+<script>
+    $(document).ready(function () {
+        $('#products').DataTable(
+            {
+                ajax: {
+                    url: "/CardPurchasedProduct/GetProducts",
+                    type: "POST",
+                },
+                processing: true,
+                serverSide: true,
+                filter: true,
+                columns: [
+                    { data: "code", name: "Code" },
+                    { data: "name", name: "Name" },
+                    {
+                        "render": function (data, type, row) { return "<a href='javascript:void(0);' onclick=calculate('" + row.code + "'); >Show</a>"; }
+                    }
+                ]
+            }
+        );
+
+        $('#materials').DataTable({
+            columns: [
+                {
+                    "render": function (data, type, row) { return ''; }
+                },
+                { data: 'code', name: "Code" },
+                { data: 'name', name: "Code" },
+                { data: 'count', name: "Count" },
+            ],
+        });
+    });
+
+    let items = [];
+
+    async function calculate(code) {
+        const response = await fetch("/CardPurchasedProduct/GetPurchasedProductsByProducts?code=" + code);
+        data = await response.json();
+
+        items = [];
+        for (i = 0; i < data.length; i++) {
+            items.push({
+                number: i,
+                id: data[i].id,
+                code: data[i].code,
+                name: data[i].name,
+                count: data[i].count,
+            });
+        }
+
+        $('#materials').DataTable({
+            destroy: true,
+            paging: false,
+            data: items,
+            columns: [
+                {
+
+                    "render": function (data, type, row) {
+                        return `<input type="checkbox" class="medium" name="ids" value="${row.number}"/>`;
+                    },
+                    "width": "5%"
+                },
+                { data: 'code', name: "Code" },
+                { data: 'name', name: "Code" },
+                { data: 'count', name: "Count" },
+            ],
+        });
+    }
+
+    $("#addButton").on('click', function () {
+        let numbers = $.map($('input[name="ids"]:checked'), function (x) { return Number(x.value); });
+
+        let selectedItems = items.filter(function (x) { return numbers.indexOf(x.number) >= 0 });
+
+        let department = $("#department").val();
+
+        let result = JSON.stringify({
+            items: selectedItems,
+            cardId: @ViewBag.CardId,
+        });
+
+        fetch("/CardPurchasedProduct/CreateByProduct", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: result
+        })
+            .then(response => {
+                if (response.ok)
+                    window.location.replace('/CardPurchasedProduct/Index?id=@ViewBag.CardId&CardsPageNumber=@ViewBag.CardsPageNumber&CardsFilter=@ViewBag.CardsFilter');
+                else
+                    response.text().then(x => alert(x));
+            });
+    });
+</script>
+
+<script>
+    $("#checkAll").click(function () {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+</script>

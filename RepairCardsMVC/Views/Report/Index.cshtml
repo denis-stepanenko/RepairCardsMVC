@@ -1,0 +1,223 @@
+﻿<h2>Отчеты</h2>
+
+<style>
+    .myTable tr {
+        line-height: 12px;
+    }
+</style>
+
+<h3>Протокол послегарантийного ремонта</h3>
+
+<form method="post" asp-action="GetPostWarrantyRepairProtacolReport" target="_blank">
+
+    <input id="cards" name="cards" hidden />
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <table id="myTable" class="display" style="font-size: 9pt;">
+                    <thead>
+                        <tr>
+                            <th>Номер</th>
+                            <th>Наименование</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="col">
+                <table id="example" class="display" style="font-size: 9pt;">
+                    <thead>
+                        <tr>
+                            <th>Номер</th>
+                            <th>Наименование</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <select name="format" class="form-select">
+        <option value="pdf">PDF</option>
+        <option value="docx">DOCX</option>
+        <option value="xlsx">XLSX</option>
+    </select>
+
+    <button id="postWarrantyRepairProtacolButton" class="btn btn-dark">Показать</button>
+
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable(
+            {
+                ajax: {
+                    url: "/Report/GetCards",
+                    type: "POST",
+                },
+                processing: true,
+                serverSide: true,
+                filter: true,
+                columns: [
+                    { data: "number", name: "Number" },
+                    { data: "productName", name: "ProductName" },
+                    {
+                        "render": function (data, type, row) { return `<a href="javascript:void(0);" onclick=\"addNewRow(['${row.number}', '` + row.productName.replaceAll('"', '') + `', '<a href=javascript:void(0);>Удалить</a>']);\">Добавить</a>`; }
+                    }
+                ]
+            }
+        );
+    });
+</script>
+
+<script>
+
+    let table;
+
+    function addNewRow(item) {
+        table.row
+            .add(item)
+            .draw(false);
+    }
+
+    $(document).ready(function () {
+        $('#example').DataTable();
+
+        table = new DataTable('#example');
+
+        $('#example tbody').on('click', 'a', function () {
+            table
+                .row($(this).parents('tr'))
+                .remove()
+                .draw();
+        });
+
+        $('#postWarrantyRepairProtacolButton').on('click', function () {
+            var data = table
+                .rows()
+                .data();
+            console.log(data);
+
+            let result = [];
+
+            for (let i = 0; i < data.length; i++) {
+                result.push(data[i][0]);
+            }
+
+            let json = JSON.stringify(result);
+
+            $("#cards").val(json);
+        });
+
+    });
+</script>
+
+<h3>Продукты, материалы и операции</h3>
+
+<form method="post" asp-action="GetProductsMaterialsAndOperationsReport" target="_blank">
+
+    <input id="cards2" name="cards" hidden />
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <table id="myTable2" class="display" style="font-size: 9pt;">
+                    <thead>
+                        <tr>
+                            <th>Номер</th>
+                            <th>Наименование</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="col">
+                <table id="example2" class="display" style="font-size: 9pt;">
+                    <thead>
+                        <tr>
+                            <th>Номер</th>
+                            <th>Наименование</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <select name="format" class="form-select">
+        <option value="pdf">PDF</option>
+        <option value="docx">DOCX</option>
+        <option value="xlsx">XLSX</option>
+    </select>
+
+    <button id="getProductsMaterialsAndOperationsReportButton" class="btn btn-dark">Показать</button>
+
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable2').DataTable(
+            {
+                ajax: {
+                    url: "/Report/GetCards",
+                    type: "POST",
+                },
+                processing: true,
+                serverSide: true,
+                filter: true,
+                columns: [
+                    { data: "number", name: "Number" },
+                    { data: "productName", name: "ProductName" },
+                    {
+                        "render": function (data, type, row) { return `<a href="javascript:void(0);" onclick=\"addNewRow2(['${row.number}', '` + row.productName.replaceAll('"', '') + `', '<a href=javascript:void(0);>Удалить</a>']);\">Добавить</a>`; }
+                    }
+                ]
+            }
+        );
+    });
+</script>
+
+<script>
+
+    let table2;
+
+    function addNewRow2(item) {
+        table2.row
+            .add(item)
+            .draw(false);
+    }
+
+    $(document).ready(function () {
+        $('#example2').DataTable();
+
+        table2 = new DataTable('#example2');
+
+        $('#example2 tbody').on('click', 'a', function () {
+            table2
+                .row($(this).parents('tr'))
+                .remove()
+                .draw();
+        });
+
+        $('#getProductsMaterialsAndOperationsReportButton').on('click', function () {
+            var data = table2
+                .rows()
+                .data();
+            console.log(data);
+
+            let result = [];
+
+            for (let i = 0; i < data.length; i++) {
+                result.push(data[i][0]);
+            }
+
+            let json = JSON.stringify(result);
+
+            $("#cards2").val(json);
+        });
+
+    });
+</script>

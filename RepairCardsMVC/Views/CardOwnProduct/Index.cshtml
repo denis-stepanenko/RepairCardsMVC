@@ -1,0 +1,90 @@
+﻿@model List<TreeNodeViewModel>
+
+<a asp-action="Edit"
+   asp-controller="Card"
+   asp-route-id="@ViewBag.CardId"
+   asp-route-pageNumber="@ViewBag.CardsPageNumber"
+   asp-route-filter="@ViewBag.CardsFilter">Назад</a>
+
+<h2>ДСЕ</h2>
+
+@if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+{
+    <div>
+        <a class="btn btn-dark"
+       asp-action="Create"
+       asp-route-cardId="@ViewBag.CardId"
+       asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+       asp-route-cardsFilter="@ViewBag.CardsFilter">Добавить</a>
+
+        <a class="btn btn-dark"
+       asp-action="CreateByCard"
+       asp-route-cardId="@ViewBag.CardId"
+       asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+       asp-route-cardsFilter="@ViewBag.CardsFilter">Добавить из другой карты</a>
+    </div>
+}
+
+<table id="example-basic" class="table">
+    <thead class="table-dark">
+        <tr>
+            <th>Децимальный номер</th>
+            <th>Наименование</th>
+            <th>Количество</th>
+            <th>Маршурут</th>
+            <th>Состав изменен</th>
+            <th>Требуется перепокрытие</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr data-tt-id="@item.Id" data-tt-parent-id="@item.ParentId" class="@(item.HasChangedComposition ?? false ? "bg-warning" : "bg-transparent")">
+                <td>@item.Code</td>
+                <td>@item.Name</td>
+                <td>@item.Count</td>
+                <td>@item.Route</td>
+                <td>@(item.HasChangedComposition ?? false ? "Да" : "Нет")</td>
+                <td>@(item.IsOvercoatingRequired ?? false ? "Да" : "Нет")</td>
+                <td>
+                    <a asp-action="Edit"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter"
+                       class="btn btn-dark">
+                        Изменить
+                    </a>
+
+                    @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+                    {
+                        <a asp-action="Delete"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter"
+                           class="btn btn-danger">
+                            Удалить
+                        </a>
+
+                        <a asp-action="MarkThatOvercoatingRequired"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter"
+                           class="btn btn-info">
+                            Требуется перепокрытие
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $("#example-basic").treetable({ expandable: true });
+    });
+</script>

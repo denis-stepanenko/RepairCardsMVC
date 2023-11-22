@@ -1,0 +1,8 @@
+﻿<form method="get" asp-action="Index">
+    <div class="input-group">
+        <input type="text" name="filter" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" value="@TempData.Peek("filter")" />
+        <input type="submit" class="btn btn-outline-primary" value="search" />
+    </div>
+
+    <a asp-action="Index">Clear</a>
+</form>

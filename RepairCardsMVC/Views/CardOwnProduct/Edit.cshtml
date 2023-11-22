@@ -1,0 +1,221 @@
+﻿@model EditCardOwnProductViewModel
+
+<a asp-action="Index"
+   asp-route-id="@ViewBag.CardId"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardsFilter="@ViewBag.CardsFilter">
+    Назад
+</a>
+<br />
+
+<form method="post">
+    <input name="Id" value="@ViewBag.Item.Id" hidden />
+    <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+
+    <dl class="row">
+        <dt class="col-sm-3">Децимальный номер</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Code</dd>
+
+        <dt class="col-sm-3">Наименование</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Name</dd>
+
+        <dt class="col-sm-3">Маршрут</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Route</dd>
+
+        <dt class="col-sm-3">Количество</dt>
+        <dd class="col-sm-9">
+            <input class="form-control" asp-for="Count" />
+            <span class="text-danger" asp-validation-for="Count"></span>
+        </dd>
+
+        <dt class="col-sm-3">Состав изменен</dt>
+        <dd class="col-sm-9">@(ViewBag.Item.HasChangedComposition ?? false ? "Да" : "Нет")</dd>
+
+        <dt class="col-sm-3">Требуется перепокрытие</dt>
+        <dd class="col-sm-9">@(ViewBag.Item.IsOvercoatingRequired ?? false ? "Да" : "Нет")</dd>
+    </dl>
+
+    @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+    {
+        <button type="submit" class="btn btn-dark">Изменить</button>
+    }
+</form>
+
+<h2>Производственные операции</h2>
+
+@if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+{
+    <a asp-action="Create"
+   asp-controller="CardOwnProductOperation"
+   asp-route-productId="@ViewBag.Item.Id"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+       class="btn btn-dark">
+        Добавить
+    </a>
+}
+
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th>Код</th>
+            <th>Наименование</th>
+            <th>Трудоемкость</th>
+            <th>Цех</th>
+            <th>Исполнитель</th>
+            <th>Дата</th>
+            <th>Утвердил</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in ViewBag.Item.Operations)
+        {
+            <tr>
+                <td>@item.Code</td>
+                <td>@item.Name</td>
+                <td>@item.Labor</td>
+                <td>@item.Department</td>
+                <td>@item.Executor?.Name</td>
+                <td>@item.Date?.ToString("dd.MM.yyyy")</td>
+                <td>@item.ConfirmUserName</td>
+                <td>
+                    @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+                    {
+                        <a class="btn btn-success"
+                   asp-controller="CardOwnProductOperation"
+                   asp-action="Edit"
+                   asp-route-id="@item.Id"
+                   asp-route-cardOwnProductId="@item.CardOwnProductId"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter">Изменить</a>
+
+                        <a class="btn btn-danger"
+                   asp-controller="CardOwnProductOperation"
+                   asp-action="Delete"
+                   asp-route-id="@item.Id"
+                   asp-route-cardOwnProductId="@item.CardOwnProductId"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter">Удалить</a>
+
+                        <a class="btn btn-info"
+                   asp-controller="CardOwnProductOperation"
+                   asp-action="Confirm"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardOwnProductId="@item.CardOwnProductId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter">Утвердить</a>
+
+                        <a class="btn btn-info"
+                   asp-controller="CardOwnProductOperation"
+                   asp-action="Unconfirm"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardOwnProductId="@item.CardOwnProductId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter">Снять утверждение</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Ремонтные операции</h2>
+
+@if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+{
+    <a asp-action="Create"
+   asp-controller="CardOwnProductRepairOperation"
+   asp-route-productId="@ViewBag.Item.Id"
+   asp-route-cardId="@ViewBag.Item.CardId"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+       class="btn btn-dark">
+        Добавить
+    </a>
+}
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Код</th>
+            <th>Наименование</th>
+            <th>Количество</th>
+            <th>Трудоемкость</th>
+            <th>Дата</th>
+            <th>Трудоемкость всего</th>
+            <th>Единица измерения</th>
+            <th>Группа</th>
+            <th>Цех</th>
+            <th>Исполнитель</th>
+            <th>Утвердил</th>
+            <th width="250px"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in ViewBag.Item.RepairOperations)
+        {
+            <tr>
+                <td>@item.Code</td>
+                <td>@item.Name</td>
+                <td>@item.Count</td>
+                <td>@item.Labor</td>
+                <td>@item.Date.ToString("dd.MM.yyyy")</td>
+                <td>@item.LaborAll</td>
+                <td>@item.UnitName</td>
+                <td>@item.GroupName</td>
+                <td>@item.Department</td>
+                <td>@item.Executor?.Name</td>
+                <td>@item.ConfirmUserName</td>
+                <td>
+                    @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+                    {
+                        <a class="btn btn-success"
+                   asp-controller="CardOwnProductRepairOperation"
+                   asp-action="Edit"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardOwnProductId="@item.CardOwnProductId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter">Изменить</a>
+
+                        <a class="btn btn-danger"
+                   asp-controller="CardOwnProductRepairOperation"
+                   asp-action="Delete"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardOwnProductId="@item.CardOwnProductId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter">Удалить</a>
+
+                        <a class="btn btn-info"
+                   asp-controller="CardOwnProductRepairOperation"
+                   asp-action="Confirm"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardOwnProductId="@item.CardOwnProductId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter">Утвердить</a>
+
+                        <a class="btn btn-info"
+                   asp-controller="CardOwnProductRepairOperation"
+                   asp-action="Unconfirm"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardOwnProductId="@item.CardOwnProductId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter">Снять утверждение</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

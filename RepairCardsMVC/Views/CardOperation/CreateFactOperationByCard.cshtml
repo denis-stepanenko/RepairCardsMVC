@@ -1,0 +1,175 @@
+﻿@model CreateFactCardOperationByCardViewModel
+
+<a asp-action="Index"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-type="@ViewBag.Type"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter"
+   asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber">Назад</a>
+
+<h2>Добавить из другой карты</h2>
+
+<table id="cards" class="display">
+    <thead>
+        <tr>
+            <th>Номер</th>
+            <th>Децимальный номер</th>
+            <th>Наименование</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+<h2>Операции</h2>
+
+<input type="checkbox" class="medium" id="checkAll" />
+
+<form asp-action="CreateFactOperationByCard">
+    <input name="CardId" value="@ViewBag.CardId" hidden />
+    <input name="Type" value="@ViewBag.Type" hidden />
+    <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+    <input name="CardOperationsPageNumber" value="@ViewBag.CardOperationsPageNumber" hidden />
+    <input name="CardOperationsFilter" value="@ViewBag.CardOperationsFilter" hidden />
+
+    <span class="text-danger" asp-validation-for="Ids"></span>
+
+    <table id="operations" class="display"></table>
+
+    <div>
+        <span>Исполнитель:</span><br />
+        <select id="executor" asp-for="ExecutorId" placeholder="Поиск">
+            @if (ViewBag.Executor != null)
+            {
+                <option value="@ViewBag.Executor.Id">@ViewBag.Executor.Name</option>
+            }
+        </select>
+        <span class="text-danger" asp-validation-for="ExecutorId"></span>
+    </div>
+
+    <div>
+        <span>Дата:</span><br />
+        <input type="date" asp-for="Date" class="form-control" />
+        <span class="text-danger" asp-validation-for="Date"></span>
+    </div>
+
+    <button class="btn btn-dark">Добавить</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#cards').DataTable(
+            {
+                ajax: {
+                    url: "/CardOperation/GetCards",
+                    type: "POST",
+                },
+                processing: true,
+                serverSide: true,
+                filter: true,
+                columns: [
+                    { data: "number" },
+                    { data: "productCode" },
+                    { data: "productName" },
+                    {
+                        "render": function (data, type, row) { return "<a href='javascript:void(0);' onclick=calculate('" + row.id + "'); >Показать</a>"; }
+                    }
+                ]
+            }
+        );
+
+        $('#operations').DataTable({
+            columns: [
+                {
+                    "render": function (data, type, row) { return ''; }
+                },
+                { data: 'code', name: "Code" },
+                { data: 'name', name: "Name" },
+                { data: 'count', name: "Count" },
+            ],
+        });
+    });
+
+    let operations = [];
+
+    async function calculate(id) {
+        const response = await fetch("/CardOperation/GetFactOperationsByCard?cardId=" + id);
+        data = await response.json();
+
+        $('#operations').DataTable({
+            destroy: true,
+            paging: false,
+            data: data,
+            columns: [
+                {
+
+                    "render": function (data, type, row) {
+                        return `<input type="checkbox" class="medium" name="ids" value="${row.id}"/>`;
+                    },
+                    "width": "5%"
+                },
+                { data: 'code', name: "Code" },
+                { data: 'name', name: "Name" },
+                { data: 'count', name: "Count" },
+            ],
+        });
+    }
+
+</script>
+
+<script>
+    $("#checkAll").click(function () {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+</script>
+
+<script>
+    $('#executor').selectize({
+        valueField: 'id',
+        labelField: 'name',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="caption">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            console.log(query);
+            var self = this;
+            $.ajax({
+                url: encodeURI('/CardOperation/FindExecutors?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+</script>

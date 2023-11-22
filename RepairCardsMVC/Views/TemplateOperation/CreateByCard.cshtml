@@ -1,0 +1,104 @@
+﻿@model CreateTemplateOperationByCardViewModel
+
+<a asp-action="Edit"
+   asp-route-id="@ViewBag.Id"
+   asp-route-templatesPageNumber="@ViewBag.TemplatesPageNumber"
+   asp-route-templatesFilter="@ViewBag.TemplatesFilter"
+   asp-route-templateOperationsPageNumber="@ViewBag.TemplateOperationsPageNumber"
+   asp-route-templateOperationsFilter="@ViewBag.TemplateOperationsFilter">Назад</a>
+
+<h2>Добавить из другой карты</h2>
+
+<table id="cards" class="display">
+    <thead>
+        <tr>
+            <th>Номер</th>
+            <th>Децимальный номер</th>
+            <th>Наименование</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+<h2>Операции</h2>
+
+<input type="checkbox" class="medium" id="checkAll" />
+
+<form asp-action="CreateByCard">
+    <input name="TemplateId" value="@ViewBag.TemplateId" hidden />
+    <input name="TemplatesPageNumber" value="@ViewBag.TemplatesPageNumber" hidden />
+    <input name="TemplatesFilter" value="@ViewBag.TemplatesFilter" hidden />
+    <input name="TemplateOperationsPageNumber" value="@ViewBag.TemplateOperationsPageNumber" hidden />
+    <input name="TemplateOperationsFilter" value="@ViewBag.TemplateOperationsFilter" hidden />
+
+    <table id="operations" class="display"></table>
+    <br />
+    <button class="btn btn-dark">Добавить</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#cards').DataTable(
+            {
+                ajax: {
+                    url: "/TemplateOperation/GetCards",
+                    type: "POST",
+                },
+                processing: true,
+                serverSide: true,
+                filter: true,
+                columns: [
+                    { data: "number" },
+                    { data: "productCode" },
+                    { data: "productName" },
+                    {
+                        "render": function (data, type, row) { return "<a href='javascript:void(0);' onclick=calculate('" + row.id + "'); >Показать</a>"; }
+                    }
+                ]
+            }
+        );
+
+        $('#operations').DataTable({
+            columns: [
+                {
+                    "render": function (data, type, row) { return ''; }
+                },
+                { data: 'code', name: "Code" },
+                { data: 'name', name: "Name" },
+                { data: 'count', name: "Count" },
+            ],
+        });
+    });
+
+    let operations = [];
+
+    async function calculate(id) {
+        const response = await fetch("/TemplateOperation/GetOperationsByCard?cardId=" + id);
+        data = await response.json();
+
+        $('#operations').DataTable({
+            destroy: true,
+            paging: false,
+            data: data,
+            columns: [
+                {
+
+                    "render": function (data, type, row) {
+                        return `<input type="checkbox" class="medium" name="ids" value="${row.id}"/>`;
+                    },
+                    "width": "5%"
+                },
+                { data: 'code', name: "Code" },
+                { data: 'name', name: "Name" },
+                { data: 'count', name: "Count" },
+            ],
+        });
+    }
+
+</script>
+
+<script>
+    $("#checkAll").click(function () {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+</script>

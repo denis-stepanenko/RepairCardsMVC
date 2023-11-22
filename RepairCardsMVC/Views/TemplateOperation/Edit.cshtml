@@ -1,0 +1,56 @@
+﻿@model EditTemplateOperationViewModel
+
+<a asp-action="Index"
+   asp-route-id="@ViewBag.TemplateId"
+   asp-route-templatesFilter="@ViewBag.TemplatesFilter"
+   asp-route-templatesPageNumber="@ViewBag.TemplatesPageNumber"
+   asp-route-templateOperationsFilter="@ViewBag.TemplateOperationsFilter"
+   asp-route-templateOperationsPageNumber="@ViewBag.TemplateOperationsPageNumber">Назад</a>
+
+<form method="post">
+    <input name="TemplateId" value="@ViewBag.Item.Id" hidden />
+    <input name="TemplatesPageNumber" value="@ViewBag.TemplatesPageNumber" hidden />
+    <input name="TemplatesFilter" value="@ViewBag.TemplatesFilter" hidden />
+    <input name="TemplateOperationsPageNumber" value="@ViewBag.TemplateOperationsPageNumber" hidden />
+    <input name="TemplateOperationsFilter" value="@ViewBag.TemplateOperationsFilter" hidden />
+    
+    <input asp-for="Id" hidden />
+
+    <dl class="row">
+        <dt class="col-sm-3">Код</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Operation.Code</dd>
+
+        <dt class="col-sm-3">Наименование</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Operation.Name</dd>
+
+        <dt class="col-sm-3">Количество</dt>
+        <dd class="col-sm-9">
+            <input class="form-control" asp-for="Count" />
+            <span class="text-danger" asp-validation-for="Count"></span>
+        </dd>
+
+        <dt class="col-sm-3">Трудоемкость</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Operation.Labor</dd>
+
+        <dt class="col-sm-3">Цена</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Operation.Price</dd>
+
+        <dt class="col-sm-3">Группа</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Operation.GroupName</dd>
+
+        <dt class="col-sm-3">Цех</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Operation.Department</dd>
+
+        <dt class="col-sm-3">Единица измерения</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Operation.UnitName</dd>
+
+        <dt class="col-sm-3">Описание</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Operation.Description</dd>
+
+        <dt class="col-sm-3">Код производственной операции</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Operation.ProductionOperationCode</dd>
+    </dl>
+
+    <button type="submit" class="btn btn-dark">Сохранить</button>
+
+</form>

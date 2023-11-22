@@ -1,0 +1,101 @@
+﻿@model EditCardOwnProductOperationViewModel
+
+<a asp-action="Edit"
+   asp-controller="CardOwnProduct"
+   asp-route-id="@ViewBag.Item.CardOwnProductId"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber">Назад</a>
+
+<form method="post">
+    <input name="Id" value="@ViewBag.Item.Id" hidden />
+    <input name="cardOwnProductId" value="@ViewBag.Item.CardOwnProductId" hidden />
+    <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+
+    <dl class="row">
+        <dt class="col-sm-3">Код</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Code</dd>
+
+        <dt class="col-sm-3">Наименование</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Name</dd>
+
+        <dt class="col-sm-3">Трудоемкость</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Labor</dd>
+
+        <dt class="col-sm-3">Цех</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Department</dd>
+
+        <dt class="col-sm-3">Дата</dt>
+        <dd class="col-sm-9">
+            <input class="form-control" asp-for="Date" asp-format="{0:yyyy-MM-ddTHH:mm}" /><br />
+            <span class="text-danger" asp-validation-for="Date"></span>
+        </dd>
+
+        <dt class="col-sm-3">Исполнитель</dt>
+        <dd class="col-sm-9">
+            <select id="executor" asp-for="ExecutorId" placeholder="Поиск">
+                @if (ViewBag.Executor != null)
+                {
+                    <option value="@ViewBag.Executor.Id">@ViewBag.Executor.Name</option>
+                }
+            </select>
+            <span class="text-danger" asp-validation-for="ExecutorId"></span>
+        </dd>
+
+    </dl>
+
+    <button type="submit" class="btn btn-dark">Сохранить</button>
+
+</form>
+
+
+<script>
+    $('#executor').selectize({
+        valueField: 'id',
+        labelField: 'name',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="caption">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            console.log(query);
+            var self = this;
+            $.ajax({
+                url: encodeURI('/CardOwnProductOperation/FindExecutors?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+</script>

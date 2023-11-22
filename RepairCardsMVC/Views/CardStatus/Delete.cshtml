@@ -1,0 +1,20 @@
+﻿@model CardStatus
+
+<a asp-action="Index"
+   asp-route-filter="@ViewBag.Filter"
+   asp-route-pageNumber="@ViewBag.PageNumber">Назад</a>
+
+<h2 class="mb-4">Удалить статус</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Наименование</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+</dl>
+
+<form method="post">
+    <input name="Filter" value="@ViewBag.Filter" hidden />
+    <input name="PageNumber" value="@ViewBag.PageNumber" hidden />
+    <input asp-for="Id" hidden />
+
+    <button type="submit" class="btn btn-danger">Удалить</button>
+</form>

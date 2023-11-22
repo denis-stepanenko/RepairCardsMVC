@@ -1,0 +1,271 @@
+﻿@model Card
+
+<a asp-action="Index"
+   asp-route-filter="@ViewBag.Filter"
+   asp-route-pageNumber="@ViewBag.PageNumber">Назад</a>
+
+<h2>Новая карта ремонта</h2>
+
+<form method="post">
+
+    <input name="Filter" value="@ViewBag.Filter" hidden />
+    <input name="PageNumber" value="@ViewBag.PageNumber" hidden />
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Номер</label>
+        <div class="col-sm-10">
+            <input id="number" class="form-control" asp-for="Number">
+            <span class="text-danger" asp-validation-for="Number"></span>
+            <div>
+                <button id="generateNewNumber" type="button" class="btn btn-dark">Получить номер</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Цех</label>
+        <div class="col-sm-10">
+            <select class="form-control" asp-for="Department">
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="13">13</option>
+                <option value="17">17</option>
+                <option value="80">80</option>
+                <option value="82">82</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Заказ производства</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="Stage">
+            <span class="text-danger" asp-validation-for="Stage"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Заводской номер</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="FactoryNumber">
+            <span class="text-danger" asp-validation-for="FactoryNumber"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Продукт</label>
+        <div class="col-sm-10">
+            <select id="product" placeholder="Поиск" asp-for="ProductCode">
+                @if (Model?.ProductCode != null)
+                {
+                    <option value="@Model.ProductCode">@Model.ProductName</option>
+                }
+            </select>
+            <span class="text-danger" asp-validation-for="ProductCode"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Заказ</label>
+        <div class="col-sm-10">
+            <select id="order" placeholder="Поиск" asp-for="Order">
+                @if (Model?.Order != null)
+                {
+                    <option value="@Model.Order">@(Model.Cipher ?? Model.Direction)</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Номер накладной</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="InvoiceNumber">
+            <span class="text-danger" asp-validation-for="InvoiceNumber"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Дата поступления</label>
+        <div class="col-sm-10">
+            <input type="date" class="form-control" asp-for="Date">
+            <span class="text-danger" asp-validation-for="Date"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Откуда поступил</label>
+        <div class="col-sm-10">
+            <select class="form-control" asp-for="Source">
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="13">13</option>
+                <option value="17">17</option>
+                <option value="80">80</option>
+                <option value="82">82</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Номер карты разрешения</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="PermissionCardNumber">
+            <span class="text-danger" asp-validation-for="PermissionCardNumber"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Номер акта</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="ActNumber">
+            <span class="text-danger" asp-validation-for="ActNumber"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Тип ремонта</label>
+        <div class="col-sm-10">
+            <select class="form-select" asp-items="@ViewBag.Types" asp-for="RepairTypeId"></select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Статус</label>
+        <div class="col-sm-10">
+            <select class="form-select" asp-items="@ViewBag.Statuses" asp-for="CardStatusId"></select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Основание ремонта</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="ReasonForRepair">
+            <span class="text-danger" asp-validation-for="ReasonForRepair"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Добавить</button>
+</form>
+
+<script>
+
+    $('#product').selectize({
+        valueField: 'code',
+        labelField: 'name',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.name + '</span>' +
+                    '<span class="email">' + item.code + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="label">' + item.code + '</span>' +
+                    '<span class="caption">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+
+            var self = this;
+            $.ajax({
+                url: encodeURI('/card/SearchProducts?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+
+
+    $("#order").selectize({
+        valueField: "order",
+        labelField: "cipher",
+        searchField: ["order", "cipher"],
+        respect_word_boundaries: false,
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.cipher + '</span>' +
+                    '<span class="email">' + item.order + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="label">' + item.cipher + '</span>' +
+                    '<span class="caption">' + item.order + "</span>" +
+                    '</div>'
+                );
+            },
+
+        }
+
+    });
+
+    if ($("#product").val() != null) {
+        loadOrders();
+    }
+
+    $('#product').on('change', function () {
+        $("#order")[0].selectize.clear();
+        loadOrders();
+    });
+
+    async function loadOrders() {
+        const code = $('#product').val();
+
+        $("#order")[0].selectize.disable();
+
+        const response = await fetch('/card/searchorders?productCode=' + code);
+        var data = await response.json();
+
+        $("#order")[0].selectize.enable();
+
+        $("#order")[0].selectize.load(function (callback) { callback(data) });
+    }
+
+</script>
+
+<script>
+    $('#generateNewNumber').on("click", function () {
+
+        fetch('/Card/GenerateNewNumber')
+            .then(response => response.text())
+            .then(response => {
+                $('#number').val(response);
+            });
+
+    });
+</script>
+

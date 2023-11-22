@@ -1,0 +1,29 @@
+﻿@model CardDocument
+
+<a asp-action="Index"
+   asp-route-cardId="@Model.CardId"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardDocumentsFilter="@ViewBag.CardDocumentsFilter"
+   asp-route-cardDocumentsPageNumber="@ViewBag.CardDocumentsPageNumber">Назад</a>
+
+<form method="post">
+    <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+    <input name="CardDocumentsPageNumber" value="@ViewBag.CardDocumentsPageNumber" hidden />
+    <input name="CardDocumentsFilter" value="@ViewBag.CardDocumentsFilter" hidden />
+    
+    <input asp-for="Id" hidden />
+    <input asp-for="CardId" hidden />
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Наименование</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="Name">
+            <span class="text-danger" asp-validation-for="Name"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-dark">Добавить</button>
+
+</form>

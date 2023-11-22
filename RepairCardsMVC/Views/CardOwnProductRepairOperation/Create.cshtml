@@ -1,0 +1,126 @@
+﻿@model CreateCardOwnProductRepairOperationViewModel
+
+<a asp-controller="CardOwnProduct"
+   asp-action="Edit"
+   asp-route-id="@ViewBag.ProductId"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardsFilter="@ViewBag.CardsFilter">
+    Назад
+</a><br/>
+
+<form method="post">
+    <input name="productId" value="@ViewBag.ProductId" hidden />
+    <input name="cardId" value="@ViewBag.CardId" hidden />
+    <input name="cardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="cardsFilter" value="@ViewBag.CardsFilter" hidden />
+
+    <button type="submit" class="btn btn-dark">Добавить</button><br/>
+
+    <div>
+        <span>Исполнитель:</span><br />
+        <select id="executor" asp-for="ExecutorId" placeholder="Поиск">
+            @if (ViewBag.Executor != null)
+            {
+                <option value="@ViewBag.Executor.Id">@ViewBag.Executor.Name</option>
+            }
+        </select>
+        <span class="text-danger" asp-validation-for="ExecutorId"></span>
+    </div>
+
+    <div>
+        <span>Дата:</span><br />
+        <input type="date" asp-for="Date" class="form-control" />
+        <span class="text-danger" asp-validation-for="Date"></span>
+    </div>
+
+    <span>Количество:</span><br/>
+    <input class="form-control" type="number" asp-for="Count"/>
+    <span class="text-danger" asp-validation-for="Count"></span>
+
+    <span class="text-danger" asp-validation-for="Ids"></span>
+
+    <table id="myTable" class="display">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Код</th>
+            <th>Наименование</th>
+        </tr>
+        </thead>
+    </table>
+
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable(
+            {
+                ajax: {
+                    url: "/cardownproductrepairoperation/GetOperations",
+                    type: "POST",
+                },
+                processing: true,
+                serverSide: true,
+                filter: true,
+                columns: [
+                    {
+                        "render": function (data, type, row) { return `<input type="checkbox" class="medium" name="ids" value="${row.id}"/>`; }
+                    },
+                        { data: "code", name: "Code" },
+                    { data: "name", name: "Name" }
+                ]
+            }
+        );
+    });
+</script>
+
+<script>
+    $('#executor').selectize({
+        valueField: 'id',
+        labelField: 'name',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="caption">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            console.log(query);
+            var self = this;
+            $.ajax({
+                url: encodeURI('/CardOwnProductRepairOperation/FindExecutors?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+</script>

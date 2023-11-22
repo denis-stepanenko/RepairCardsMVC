@@ -1,0 +1,312 @@
+﻿@model PaginatedList<CardOperation>
+
+<a asp-controller="Card"
+   asp-action="Edit"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-id="@ViewBag.CardId"
+   asp-route-filter="@ViewBag.CardsFilter"
+   asp-route-pageNumber="@ViewBag.CardsPageNumber">Назад</a>
+
+<h2>Фактические операции</h2>
+
+<form method="get">
+    <div class="input-group">
+        <input type="text"
+               class="form-control rounded"
+               placeholder="Поиск"
+               aria-label="Search"
+               aria-describedby="search-addon"
+               name="cardOperationsFilter"
+               value="@ViewBag.CardOperationsFilter" />
+
+        <input name="cardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+        <input name="cardsFilter" value="@ViewBag.CardsFilter" hidden />
+        <input name="type" value="@ViewBag.Type" hidden />
+        <input name="cardId" value="@ViewBag.CardId" hidden />
+
+        <input type="submit" class="btn btn-outline-primary" value="Найти" />
+    </div>
+</form>
+
+@if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+{
+    <div>
+        <a class="btn btn-dark"
+       asp-action="Create"
+       asp-route-cardId="@ViewBag.CardId"
+       asp-route-type="@ViewBag.Type"
+       asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+       asp-route-cardsFilter="@ViewBag.CardsFilter"
+       asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber"
+       asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter">Добавить</a>
+
+        <a class="btn btn-dark"
+       asp-action="CreateByPlanOperations"
+       asp-route-cardId="@ViewBag.CardId"
+       asp-route-type="@ViewBag.Type"
+       asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+       asp-route-cardsFilter="@ViewBag.CardsFilter"
+       asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber"
+       asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter">Добавить из плановых операций</a>
+
+        <a class="btn btn-dark"
+       asp-action="CreateFactOperationByCard"
+       asp-route-cardId="@ViewBag.CardId"
+       asp-route-type="@ViewBag.Type"
+       asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+       asp-route-cardsFilter="@ViewBag.CardsFilter"
+       asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber"
+       asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter">Добавить из другой карты</a>
+
+        <a class="btn btn-dark"
+       asp-action="CreateFactOperationByTemplate"
+       asp-route-cardId="@ViewBag.CardId"
+       asp-route-type="@ViewBag.Type"
+       asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+       asp-route-cardsFilter="@ViewBag.CardsFilter"
+       asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber"
+       asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter">Добавить из шаблона</a>
+    </div>
+}
+
+<form asp-action="ChangeDateAndExecutor">
+    <input name="cardId" value="@ViewBag.CardId" hidden />
+    <input name="type" value="@ViewBag.Type" hidden />
+    <input name="cardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="cardsFilter" value="@ViewBag.CardsFilter" hidden />
+    <input name="cardOperationsPageNumber" value="@ViewBag.CardOperationsPageNumber" hidden />
+    <input name="cardOperationsFilter" value="@ViewBag.CardOperationsFilter" hidden />
+
+    @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+    {
+        <p>
+            <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseGroupOperations" role="button" aria-expanded="false" aria-controls="collapseGroupOperations">
+                Групповое изменение
+            </a>
+        </p>
+    }
+    
+    <div class="collapse" id="collapseGroupOperations">
+        <div class="card card-body">
+            <label>Дата</label>
+            <input type="date" class="form-control" name="date"/><br />
+            <label>Исполнитель</label>
+            <select id="executor" name="executorId" placeholder="Поиск"></select>
+            <button class="btn btn-warning">Изменить</button>
+        </div>
+    </div>
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th width="30px"></th>
+                <th>Код</th>
+                <th>Наименование</th>
+                <th>Количество</th>
+                <th>Трудоемкость</th>
+                <th>Дата</th>
+                <th>Трудоемкость всего</th>
+                <th>Единица измерения</th>
+                <th>Группа</th>
+                <th>Цех</th>
+                <th>Исполнитель</th>
+                <th>Комментарий</th>
+                <th width="250px"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><input type="checkbox" class="medium" name="ids" value="@item.Id" /></td>
+                    <td>@item.Code</td>
+                    <td>@item.Name</td>
+                    <td>@item.Count</td>
+                    <td>@item.Labor</td>
+                    <td>@item.Date.ToString("dd.MM.yyyy")</td>
+                    <td>@item.LaborAll</td>
+                    <td>@item.UnitName</td>
+                    <td>@item.GroupName</td>
+                    <td>@item.Department</td>
+                    <td>@item.Executor?.Name</td>
+                    <td>@item.Comment</td>
+                    <td>
+                        @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+                        {
+                            <a class="btn btn-success"
+                       asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       asp-route-cardId="@item.CardId"
+                       asp-route-type="@item.Type"
+                       asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                       asp-route-cardsFilter="@ViewBag.CardsFilter"
+                       asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber"
+                       asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter">Изменить</a>
+
+                            <a class="btn btn-danger"
+                       asp-action="Delete"
+                       asp-route-id="@item.Id"
+                       asp-route-cardId="@item.CardId"
+                       asp-route-type="@item.Type"
+                       asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                       asp-route-cardsFilter="@ViewBag.CardsFilter"
+                       asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber"
+                       asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter">Удалить</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</form>
+
+<nav>
+    <ul class="pagination justify-content-center">
+        @{
+            int page = ViewBag.CardOperationsPageNumber;
+            int count = Model.TotalPages;
+            int countOfVisiblePages = 15;
+
+            int start = Math.Min(Math.Max(1, page - 2), count - countOfVisiblePages);
+            int end = Math.Min(start + countOfVisiblePages, count);
+
+            bool showFirstPage = start > 1;
+            bool showLastPage = end < count;
+
+            if (count <= countOfVisiblePages)
+            {
+                start = 1;
+                end = count;
+                showFirstPage = false;
+                showLastPage = false;
+            }
+
+            <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-type="@ViewBag.Type"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardOperationsPageNumber="@(ViewBag.CardOperationsPageNumber - 1)"
+               asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter">Назад</a>
+            </li>
+
+            if (showFirstPage)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-type="@ViewBag.Type"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardOperationsPageNumber="1"
+               asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            }
+
+            for (int i = start; i <= end; i++)
+            {
+                if (page != i)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-type="@ViewBag.Type"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardOperationsPageNumber="@i"
+               asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter">@i</a>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">@i</a>
+                    </li>
+                }
+            }
+
+            if (showLastPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-type="@ViewBag.Type"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardOperationsPageNumber="@count"
+               asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter">@count</a>
+                </li>
+            }
+
+            <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-type="@ViewBag.Type"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardOperationsPageNumber="@(ViewBag.CardOperationsPageNumber + 1)"
+               asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter">Вперед</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+<script>
+    $('#executor').selectize({
+        valueField: 'id',
+        labelField: 'name',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="caption">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            console.log(query);
+            var self = this;
+            $.ajax({
+                url: encodeURI('/CardOperation/FindExecutors?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+</script>

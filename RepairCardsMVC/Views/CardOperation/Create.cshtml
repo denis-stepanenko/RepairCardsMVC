@@ -1,0 +1,278 @@
+﻿@model CreateCardOperationViewModel
+
+<a asp-action="Index"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-type="@ViewBag.Type"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter"
+   asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber">Назад</a>
+
+<h2>Выбрать операции</h2>
+
+<form method="get">
+    <div class="input-group">
+        <input type="text"
+               class="form-control rounded"
+               placeholder="Поиск"
+               aria-label="Search"
+               aria-describedby="search-addon"
+               name="operationsFilter"
+               value="@ViewBag.OperationsFilter" />
+
+        <input name="CardId" value="@ViewBag.CardId" hidden />
+        <input name="Type" value="@ViewBag.Type" hidden />
+        <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+        <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+        <input name="CardOperationsPageNumber" value="@ViewBag.CardOperationsPageNumber" hidden />
+        <input name="CardOperationsFilter" value="@ViewBag.CardOperationsFilter" hidden />
+
+        <input type="submit" class="btn btn-outline-primary" value="Найти" />
+    </div>
+</form>
+
+<form method="post">
+    <input name="CardId" value="@ViewBag.CardId" hidden />
+    <input name="Type" value="@ViewBag.Type" hidden />
+    <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+    <input name="CardOperationsPageNumber" value="@ViewBag.CardOperationsPageNumber" hidden />
+    <input name="CardOperationsFilter" value="@ViewBag.CardOperationsFilter" hidden />
+
+    <span class="text-danger" asp-validation-for="SelectedItems"></span><br/>
+
+    <input type="checkbox" class="medium" id="selectDeselectCheckbox" />
+
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th></th>
+                <th>Код</th>
+                <th>Наименование</th>
+                <th>Трудоемкость</th>
+                <th>Цена</th>
+                <th>Группа</th>
+                <th>Цех</th>
+                <th>Единица измерения</th>
+                <th>Описание</th>
+                <th>Используется</th>
+                <th>Код производственной операции</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in ViewBag.Items)
+            {
+                <tr>
+                    <td><input type="checkbox" name="selectedItems" class="medium" value="@item.Id" /></td>
+                    <td>@item.Code</td>
+                    <td>@item.Name</td>
+                    <td>@item.Labor</td>
+                    <td>@item.Price</td>
+                    <td>@item.GroupName</td>
+                    <td>@item.Department</td>
+                    <td>@item.UnitName</td>
+                    <td>@item.Description</td>
+                    <td>@item.IsInactive</td>
+                    <td>@item.ProductionOperationCode</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        <span>Количество:</span><br/>
+        <input type="number" asp-for="Count" class="form-control" />
+        <span class="text-danger" asp-validation-for="Count"></span>
+    </div>
+    
+    <div>
+        <span>Исполнитель:</span><br/>
+        <select id="executor" asp-for="ExecutorId" placeholder="Поиск">
+            @if (ViewBag.Executor != null)
+            {
+                <option value="@ViewBag.Executor.Id">@ViewBag.Executor.Name</option>
+            }
+        </select>
+        <span class="text-danger" asp-validation-for="ExecutorId"></span>
+    </div>
+    
+    <div>
+        <span>Дата:</span><br/>
+        <input type="date" asp-for="Date" class="form-control" />
+        <span class="text-danger" asp-validation-for="Date"></span>
+    </div>
+
+    <button type="submit" class="btn btn-dark">Добавить</button><br />
+</form>
+
+<script>
+    $("#selectDeselectCheckbox").on("click", function () {
+
+        var elements = document.getElementsByName('selectedItems');
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].checked = $("#selectDeselectCheckbox").is(":checked");
+        }
+
+    });
+</script>
+
+<script>
+    $('#executor').selectize({
+        valueField: 'id',
+        labelField: 'name',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="caption">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            console.log(query);
+            var self = this;
+            $.ajax({
+                url: encodeURI('/CardOperation/FindExecutors?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+</script>
+
+<nav>
+    <ul class="pagination justify-content-center">
+        @{
+            int page = ViewBag.OperationsPageNumber;
+            int count = ViewBag.Items.TotalPages;
+            int countOfVisiblePages = 15;
+
+            int start = Math.Min(Math.Max(1, page - 2), count - countOfVisiblePages);
+            int end = Math.Min(start + countOfVisiblePages, count);
+
+            bool showFirstPage = start > 1;
+            bool showLastPage = end < count;
+
+            if (count <= countOfVisiblePages)
+            {
+                start = 1;
+                end = count;
+                showFirstPage = false;
+                showLastPage = false;
+            }
+
+            <li class="page-item @(!ViewBag.Items.HasPreviousPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-id="@ViewBag.CardId"
+               asp-route-type="@ViewBag.Type"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber"
+               asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter"
+               asp-route-operationsPageNumber="@(ViewBag.OperationsPageNumber - 1)"
+               asp-route-operationsFilter="@ViewBag.OperationsFilter">Назад</a>
+            </li>
+
+            if (showFirstPage)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-id="@ViewBag.CardId"
+               asp-route-type="@ViewBag.Type"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber"
+               asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter"
+               asp-route-operationsPageNumber="1"
+               asp-route-operationsFilter="@ViewBag.OperationsFilter">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            }
+
+            for (int i = start; i <= end; i++)
+            {
+                if (page != i)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+               asp-route-id="@ViewBag.CardId"
+               asp-route-type="@ViewBag.Type"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber"
+               asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter"
+               asp-route-operationsPageNumber="@i"
+               asp-route-operationsFilter="@ViewBag.OperationsFilter">@i</a>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">@i</a>
+                    </li>
+                }
+            }
+
+            if (showLastPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-id="@ViewBag.CardId"
+               asp-route-type="@ViewBag.Type"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber"
+               asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter"
+               asp-route-operationsPageNumber="@count"
+               asp-route-operationsFilter="@ViewBag.OperationsFilter">@count</a>
+                </li>
+
+            }
+
+            <li class="page-item @(!ViewBag.Items.HasNextPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-id="@ViewBag.CardId"
+               asp-route-type="@ViewBag.Type"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber"
+               asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter"
+               asp-route-operationsPageNumber="@(ViewBag.OperationsPageNumber + 1)"
+               asp-route-operationsFilter="@ViewBag.OperationsFilter">Вперед</a>
+            </li>
+        }
+    </ul>
+</nav>

@@ -1,0 +1,115 @@
+﻿@model EditCardOperationViewModel
+
+<a asp-action="Index"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-type="@ViewBag.Type"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter"
+   asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber">Назад</a>
+
+<form method="post">
+    <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+    <input name="CardOperationsPageNumber" value="@ViewBag.CardOperationsPageNumber" hidden />
+    <input name="CardOperationsFilter" value="@ViewBag.CardOperationsFilter" hidden />
+    
+    <input name="Id" value="@ViewBag.Id" hidden />
+    <input name="CardId" value="@ViewBag.CardId" hidden />
+    <input name="Type" value="@ViewBag.Type" hidden />
+
+    <dl class="row">
+        <dt class="col-sm-3">Код</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Code</dd>
+
+        <dt class="col-sm-3">Наименование</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Name</dd>
+
+        <dt class="col-sm-3">Количество</dt>
+        <dd class="col-sm-9">
+            <input asp-for="Count" /><br/>
+            <span class="text-danger" asp-validation-for="Count"></span>
+        </dd>
+
+        <dt class="col-sm-3">Трудоемкость</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Labor</dd>
+
+        <dt class="col-sm-3">Дата</dt>
+        <dd class="col-sm-9">
+            <input class="form-control" asp-for="Date" asp-format="{0:yyyy-MM-ddTHH:mm}" /><br />
+            <span class="text-danger" asp-validation-for="Date"></span>
+        </dd>
+
+        <dt class="col-sm-3">Единица измерения</dt>
+        <dd class="col-sm-9">@ViewBag.Item.UnitName</dd>
+
+        <dt class="col-sm-3">Группа</dt>
+        <dd class="col-sm-9">@ViewBag.Item.GroupName</dd>
+
+        <dt class="col-sm-3">Цех</dt>
+        <dd class="col-sm-9">@ViewBag.Item.Department</dd>
+
+        <dt class="col-sm-3">Исполнитель</dt>
+        <dd class="col-sm-9">
+            <select id="executor" asp-for="ExecutorId" placeholder="Поиск">
+                @if (ViewBag.Executor != null)
+                {
+                    <option value="@ViewBag.Executor.Id">@ViewBag.Executor.Name</option>
+                }
+            </select>
+            <span class="text-danger" asp-validation-for="ExecutorId"></span>
+        </dd>
+    </dl>
+
+    <button type="submit" class="btn btn-dark">Сохранить</button>
+</form>
+
+<script>
+    $('#executor').selectize({
+        valueField: 'id',
+        labelField: 'name',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="caption">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            console.log(query);
+            var self = this;
+            $.ajax({
+                url: encodeURI('/CardOperation/FindExecutors?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+</script>

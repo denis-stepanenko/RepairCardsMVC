@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Карты ремонта</title>
+    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/RepairCardsMVC.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="~/lib/toastify-js/toastify.css" />
+    <link rel="stylesheet" href="~/css/scroll-button.css"/>
+    <link rel="stylesheet" href="~/lib/datatables/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="~/lib/selectize.js/css/selectize.default.min.css"/>
+    <link href="~/css/jquery.treetable.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/jquery.treetable.theme.default.css" rel="stylesheet" type="text/css" />
+    
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="~/lib/toastify-js/toastify.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Card" asp-action="Index">Карты ремонта</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="Index">Карты</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Executor" asp-action="Index">Исполнители</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Operation" asp-action="Index">Операции</a>
+                        </li>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="RepairType" asp-action="Index">Типы ремонта</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CardStatus" asp-action="Index">Статусы</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ExportRequest" asp-action="Index">Заявки на экспорт</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="RequestToCreateStagesIn1S" asp-action="Index">Заявки на создание этапов в 1С</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Request" asp-action="Index">Заявки</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="UnlockedPeriod" asp-action="Index">Открытие периодов</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Template" asp-action="Index">Шаблоны</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Report" asp-action="Index">Отчеты</a>
+                        </li>
+
+                        @if(User.IsInRole("admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Пользователи</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Роли</a>
+                            </li>
+                        }
+
+                        <partial name="_LoginPartial" />
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <main role="main" class="pb-3">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/lib/selectize.js/js/selectize.js"></script>
+
+            @RenderBody()
+        </main>
+    </div>
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <button onclick="topFunction()" id="myBtn" title="Go to top">Вверх</button>
+
+    <script>
+        // Get the button
+        let mybutton = document.getElementById("myBtn");
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+    </script>
+
+    <script>
+        function showMessage(message) {
+
+            if (message == '')
+                return;
+
+            Toastify({
+                text: message,
+                duration: 6000,
+                newWindow: true,
+                close: true,
+                gravity: "top", // `top` or `bottom`
+                position: "right", // `left`, `center` or `right`
+                stopOnFocus: true, // Prevents dismissing of toast on hover
+                style: {
+                    background: "#ffc500",
+                    color: "#333333"
+                },
+                onClick: function () { } // Callback after click
+            }).showToast();
+        }
+
+        showMessage('@TempData["message"]');
+    </script>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2023 - Карты ремонта
+        </div>
+    </footer>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/jquery.treetable.js"></script>
+    <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+    
+</body>
+</html>

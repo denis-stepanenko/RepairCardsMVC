@@ -1,0 +1,164 @@
+﻿@model Operation
+
+<a asp-action="Index"
+   asp-route-filter="@ViewBag.Filter"
+   asp-route-pageNumber="@ViewBag.PageNumber">Назад</a>
+
+<h2>Добавить операцию</h2>
+
+<form method="post">
+    <input name="Filter" value="@ViewBag.Filter" hidden />
+    <input name="PageNumber" value="@ViewBag.PageNumber" hidden />
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Код</label>
+        <div class="col-sm-10">
+            <input id="code" class="form-control" asp-for="Code">
+            <div>
+                <span class="text-danger" asp-validation-for="Code"></span>
+            </div>
+            <button id="generateNewCode" type="button" class="btn btn-dark">Получить новый код</button>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Наименование</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="Name">
+            <span class="text-danger" asp-validation-for="Name"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Трудоемкость</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="number" asp-for="Labor">
+            <span class="text-danger" asp-validation-for="Labor"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Цена</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="number" asp-for="Price">
+            <span class="text-danger" asp-validation-for="Price"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Группа</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="GroupName">
+            <span class="text-danger" asp-validation-for="GroupName"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Цех</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="number" asp-for="Department">
+            <span class="text-danger" asp-validation-for="Department"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Единица измерения</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="UnitName">
+            <span class="text-danger" asp-validation-for="UnitName"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Описание</label>
+        <div class="col-sm-10">
+            <input class="form-control" asp-for="Description">
+            <span class="text-danger" asp-validation-for="Description"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Не используется</label>
+        <div class="col-sm-10">
+            <input class="medium" type="checkbox" asp-for="IsInactive" />
+            <span class="text-danger" asp-validation-for="IsInactive"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Производственная операция</label>
+        <div class="col-sm-10">
+            <select id="productionOperation" asp-for="ProductionOperationCode" placeholder="Поиск">
+                @if (Model.ProductionOperationCode != null)
+                {
+                    <option value="@Model.ProductionOperationCode">@Model.ProductionOperation?.Code - @Model.ProductionOperation?.Name</option>
+                }
+            </select>
+            <span class="text-danger" asp-validation-for="ProductionOperationCode"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Добавить</button>
+</form>
+
+<script>
+    $('#generateNewCode').on("click", function () {
+
+        fetch('/Operation/GenerateNewCode')
+            .then(response => response.text())
+            .then(response => {
+                $('#code').val(response);
+            });
+
+    });
+</script>
+
+<script>
+    $('#productionOperation').selectize({
+        valueField: 'code',
+        labelField: 'name',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.code + " - " + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="caption">' + item.code + " - " + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+
+            var self = this;
+            $.ajax({
+                url: encodeURI('/Operation/FindProductionOperations?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+</script>

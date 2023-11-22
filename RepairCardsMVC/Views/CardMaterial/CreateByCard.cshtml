@@ -1,0 +1,135 @@
+﻿@model CreateCardMaterialByCardViewModel
+
+<a asp-action="Index"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter"
+   asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber">Назад</a>
+
+<h2>Добавить из другой карты</h2>
+
+<table id="cards" class="display">
+    <thead>
+        <tr>
+            <th>Номер</th>
+            <th>Децимальный номер</th>
+            <th>Наименование</th>
+            <th></th>
+        </tr>
+    </thead>
+</table>
+
+<h2>Материалы</h2>
+
+<input type="checkbox" class="medium" id="checkAll" />
+
+<table id="materials" class="display"></table>
+<br />
+<button id="addButton" class="btn btn-dark">Добавить</button>
+
+<script>
+    $(document).ready(function () {
+        $('#cards').DataTable(
+            {
+                ajax: {
+                    url: "/CardMaterial/GetCards",
+                    type: "POST",
+                },
+                processing: true,
+                serverSide: true,
+                filter: true,
+                columns: [
+                    { data: "number" },
+                    { data: "productCode" },
+                    { data: "productName" },
+                    {
+                        "render": function (data, type, row) { return "<a href='javascript:void(0);' onclick=calculate('" + row.id + "'); >Показать</a>"; }
+                    }
+                ]
+            }
+        );
+
+        $('#materials').DataTable({
+            columns: [
+                {
+                    "render": function (data, type, row) { return ''; }
+                },
+                { data: 'code', name: "Code" },
+                { data: 'name', name: "Name" },
+                { data: 'count', name: "Count" },
+                { data: 'department', name: "Department" },
+            ],
+        });
+    });
+
+    let items = [];
+
+    async function calculate(id) {
+        const response = await fetch("/CardMaterial/GetMaterialsByCard?cardId=" + id);
+        data = await response.json();
+
+        items = [];
+        for (i = 0; i < data.length; i++) {
+            items.push({
+                number: i,
+                id: data[i].id,
+                code: data[i].code,
+                name: data[i].name,
+                count: data[i].count,
+                department: data[i].department,
+                unitId: data[i].unitId
+            });
+        }
+
+        $('#materials').DataTable({
+            destroy: true,
+            paging: false,
+            data: items,
+            columns: [
+                {
+
+                    "render": function (data, type, row) {
+                        return `<input type="checkbox" class="medium" name="ids" value="${row.number}"/>`;
+                    },
+                    "width": "5%"
+                },
+                { data: 'code', name: "Code" },
+                { data: 'name', name: "Name" },
+                { data: 'count', name: "Count" },
+                { data: 'department', name: "Department" },
+            ],
+        });
+    }
+
+    $("#addButton").on('click', function () {
+        let numbers = $.map($('input[name="ids"]:checked'), function (x) { return Number(x.value); });
+
+        let selectedItems = items.filter(function (x) { return numbers.indexOf(x.number) >= 0 });
+
+        let result = JSON.stringify({
+            items: selectedItems,
+            cardId: @ViewBag.CardId
+        });
+
+        fetch("/CardMaterial/CreateByCard", {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: result
+        })
+            .then(response => {
+                if (response.ok)
+                    window.location.replace('/CardMaterial/Index?cardId=@ViewBag.CardId&CardsPageNumber=@ViewBag.CardsPageNumber&CardsFilter=@ViewBag.CardsFilter&CardMaterialsPageNumber=@ViewBag.CardMaterialsPageNumber&CardMaterialsFilter=@ViewBag.CardMaterialsFilter');
+                else
+                    response.text().then(x => alert(x));
+            });
+    });
+</script>
+
+<script>
+    $("#checkAll").click(function () {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+</script>

@@ -1,0 +1,199 @@
+﻿@model CreateCardMaterialViewModel
+
+<a asp-action="Index"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter"
+   asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber">Назад</a>
+
+<h2>Выбрать материалы</h2>
+
+<form method="get">
+    <div class="input-group">
+        <input type="text"
+               class="form-control rounded"
+               placeholder="Поиск"
+               aria-label="Search"
+               aria-describedby="search-addon"
+               name="MaterialsFilter"
+               value="@ViewBag.MaterialsFilter" />
+
+        <input name="CardId" value="@ViewBag.CardId" hidden />
+        <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+        <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+        <input name="CardMaterialsPageNumber" value="@ViewBag.CardMaterialsPageNumber" hidden />
+        <input name="CardMaterialsFilter" value="@ViewBag.CardMaterialsFilter" hidden />
+
+        <input type="submit" class="btn btn-outline-primary" value="Найти" />
+    </div>
+</form>
+
+<form method="post">
+    <input name="CardId" value="@ViewBag.CardId" hidden />
+    <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+    <input name="CardMaterialsPageNumber" value="@ViewBag.CardMaterialsPageNumber" hidden />
+    <input name="CardMaterialsFilter" value="@ViewBag.CardMaterialsFilter" hidden />
+
+    <span class="text-danger" asp-validation-for="SelectedItems"></span>
+
+    <div>
+        <input type="checkbox" class="medium" id="selectDeselectCheckbox" />
+
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th></th>
+                    <th>Код</th>
+                    <th>Наименование</th>
+                    <th>Размер</th>
+                    <th>Тип</th>
+                    <th>Цена</th>
+                    <th>Цех</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in ViewBag.Materials)
+                {
+                    <tr>
+                        <td><input type="checkbox" name="selectedItems" class="medium" value="@item.Id" /></td>
+                        <td>@item.Code</td>
+                        <td>@item.Name</td>
+                        <td>@item.Size</td>
+                        <td>@item.Type</td>
+                        <td>@item.Price</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <span>Количество:</span><br />
+        <input type="number" class="form-control" asp-for="Count" />
+
+        <span class="text-danger" asp-validation-for="Count"></span>
+    </div>
+
+
+    <span>Цех:</span><br />
+    <select class="form-control" asp-for="Department">
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="13">13</option>
+        <option value="17">17</option>
+        <option value="80">80</option>
+        <option value="82">82</option>
+    </select><br />
+
+    <button type="submit" class="btn btn-dark">Добавить</button><br />
+
+</form>
+
+<nav>
+    <ul class="pagination justify-content-center">
+        @{
+            int page = ViewBag.MaterialsPageNumber;
+            int count = ViewBag.Materials.TotalPages;
+            int countOfVisiblePages = 15;
+
+            int start = Math.Min(Math.Max(1, page - 2), count - countOfVisiblePages);
+            int end = Math.Min(start + countOfVisiblePages, count);
+
+            bool showFirstPage = start > 1;
+            bool showLastPage = end < count;
+
+            if (count <= countOfVisiblePages)
+            {
+                start = 1;
+                end = count;
+                showFirstPage = false;
+                showLastPage = false;
+            }
+
+            <li class="page-item @(!ViewBag.Materials.HasPreviousPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber"
+               asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter"
+               asp-route-materialsPageNumber="@(ViewBag.MaterialsPageNumber - 1)"
+               asp-route-materialsFilter="@ViewBag.MaterialsFilter">Назад</a>
+            </li>
+
+            if (showFirstPage)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber"
+               asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter"
+               asp-route-materialsPageNumber="1"
+               asp-route-materialsFilter="@ViewBag.MaterialsFilter">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            }
+
+            for (int i = start; i <= end; i++)
+            {
+                if (page != i)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber"
+               asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter"
+               asp-route-materialsPageNumber="@i"
+               asp-route-materialsFilter="@ViewBag.MaterialsFilter">@i</a>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">@i</a>
+                    </li>
+                }
+            }
+
+            if (showLastPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="#">...</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber"
+               asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter"
+               asp-route-materialsPageNumber="@count"
+               asp-route-materialsFilter="@ViewBag.MaterialsFilter">@count</a>
+                </li>
+
+            }
+
+            <li class="page-item @(!ViewBag.Materials.HasNextPage ? "disabled" : "")">
+                <a class="page-link"
+               asp-route-cardId="@ViewBag.CardId"
+               asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+               asp-route-cardsFilter="@ViewBag.CardsFilter"
+               asp-route-cardMaterialsPageNumber="@ViewBag.CardMaterialsPageNumber"
+               asp-route-cardMaterialsFilter="@ViewBag.CardMaterialsFilter"
+               asp-route-materialsPageNumber="@(ViewBag.MaterialsPageNumber + 1)"
+               asp-route-materialsFilter="@ViewBag.MaterialsFilter">Вперед</a>
+            </li>
+        }
+    </ul>
+</nav>

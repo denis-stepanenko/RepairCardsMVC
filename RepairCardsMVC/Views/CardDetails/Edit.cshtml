@@ -1,0 +1,69 @@
+﻿@model CardDetails
+
+<a asp-controller="Card"
+   asp-action="Edit"
+   asp-route-id="@ViewBag.CardId"
+   asp-route-filter="@ViewBag.CardsFilter"
+   asp-route-pageNumber="@ViewBag.CardsPageNumber">Назад</a>
+
+<form method="post" asp-action="Edit" asp-controller="CardDetails">
+
+    <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+    <input name="CardId" value="@ViewBag.CardId" hidden />
+
+    <input asp-for="Id" hidden/>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Внешняя дефектация</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" asp-for="ExternalDefects"></textarea>
+            <span class="text-danger" asp-validation-for="ExternalDefects"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Внутренняя дефектация</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" asp-for="InternalDefects"></textarea>
+            <span class="text-danger" asp-validation-for="InternalDefects"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Проверка эл. параметров в объеме ПСИ, описание обнаруженных неисправностей</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" asp-for="Malfunctions"></textarea>
+            <span class="text-danger" asp-validation-for="Malfunctions"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Причина отказа</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" asp-for="CauseOfProductFailure"></textarea>
+            <span class="text-danger" asp-validation-for="CauseOfProductFailure"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Объем восстановительных работ</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" asp-for="ScopeOfRepair"></textarea>
+            <span class="text-danger" asp-validation-for="ScopeOfRepair"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Заключение комиссии</label>
+        <div class="col-sm-10">
+            <textarea class="form-control" asp-for="CommissionReport"></textarea>
+            <span class="text-danger" asp-validation-for="CommissionReport"></span>
+        </div>
+    </div>
+
+    @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+    {
+        <button class="btn btn-success">Сохранить</button>
+    }
+</form>

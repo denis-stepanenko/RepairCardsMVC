@@ -1,0 +1,32 @@
+﻿@model UnlockedPeriod
+
+<a asp-action="Index"
+   asp-route-filter="@ViewBag.Filter"
+   asp-route-pageNumber="@ViewBag.PageNumber">Назад</a>
+
+<h2 class="mb-4">Удалить</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Год</dt>
+    <dd class="col-sm-9">@Model.Year</dd>
+
+    <dt class="col-sm-3">Месяц</dt>
+    <dd class="col-sm-9">@Model.Month</dd>
+
+    <dt class="col-sm-3">Карта</dt>
+    <dd class="col-sm-9">@Model.Card.Number</dd>
+
+    <dt class="col-sm-3">Создатель</dt>
+    <dd class="col-sm-9">@Model.CreatorName</dd>
+</dl>
+
+<form method="post">
+    <input name="Filter" value="@ViewBag.Filter" hidden />
+    <input name="PageNumber" value="@ViewBag.PageNumber" hidden />
+    
+    <input asp-for="Id" hidden />
+
+    <button type="submit" class="btn btn-danger">Удалить</button>
+</form>
+
+

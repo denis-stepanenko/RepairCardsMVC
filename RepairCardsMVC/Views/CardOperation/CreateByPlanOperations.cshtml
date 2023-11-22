@@ -1,0 +1,136 @@
+﻿@model CreateCardOperationByPlanViewModel
+
+<a asp-action="Index"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-type="@ViewBag.Type"
+   asp-route-cardsFilter="@ViewBag.CardsFilter"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardOperationsFilter="@ViewBag.CardOperationsFilter"
+   asp-route-cardOperationsPageNumber="@ViewBag.CardOperationsPageNumber">Назад</a>
+
+<h2>Добавить из плана</h2>
+
+<input type="checkbox" class="medium" id="checkAll" />
+
+<form asp-action="CreateByPlanOperations">
+    <input name="CardId" value="@ViewBag.CardId" hidden />
+    <input name="Type" value="@ViewBag.Type" hidden />
+    <input name="CardsPageNumber" value="@ViewBag.CardsPageNumber" hidden />
+    <input name="CardsFilter" value="@ViewBag.CardsFilter" hidden />
+    <input name="CardOperationsPageNumber" value="@ViewBag.CardOperationsPageNumber" hidden />
+    <input name="CardOperationsFilter" value="@ViewBag.CardOperationsFilter" hidden />
+    <input name="OperationsPageNumber" value="@ViewBag.OperationsPageNumber" hidden />
+    <input name="OperationsFilter" value="@ViewBag.OperationsFilter" hidden />
+
+    <span class="text-danger" asp-validation-for="Ids"></span>
+
+    <table id="items" class="display"></table>
+
+    <div>
+        <span>Количество:</span><br />
+        <input type="number" asp-for="Count" class="form-control" />
+        <span class="text-danger" asp-validation-for="Count"></span>
+    </div>
+
+    <div>
+        <span>Исполнитель:</span><br />
+        <select id="executor" asp-for="ExecutorId" placeholder="Поиск">
+            @if (ViewBag.Executor != null)
+            {
+                <option value="@ViewBag.Executor.Id">@ViewBag.Executor.Name</option>
+            }
+        </select>
+        <span class="text-danger" asp-validation-for="ExecutorId"></span>
+    </div>
+
+    <div>
+        <span>Дата:</span><br />
+        <input type="date" asp-for="Date" class="form-control" />
+        <span class="text-danger" asp-validation-for="Date"></span>
+    </div>
+
+    <button id="addButton" class="btn btn-dark">Добавить</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#items').DataTable(
+            {
+                ajax: {
+                    url: "/CardOperation/GetPlanOperations",
+                    type: "POST",
+                    data: { cardId: @ViewBag.CardId }
+                },
+                processing: true,
+                serverSide: true,
+                filter: true,
+                paging: false,
+                columns: [
+                    {
+                        "render": function (data, type, row) { return '<input type="checkbox" class="medium" name="ids" value="'+ row.id +'"/>'; }
+                    },
+                    { data: "code", name: "Code" },
+                    { data: "name", name: "Name" },
+                    { data: "count", name: "Count" },
+                    
+                ]
+            }
+        );
+});
+</script>
+
+<script>
+    $("#checkAll").click(function () {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+</script>
+
+<script>
+    $('#executor').selectize({
+        valueField: 'id',
+        labelField: 'name',
+
+        score: function () { return function () { return 1; }; },
+
+        render: {
+            item: function (item, escape) {
+                return (
+                    '<div>' +
+                    '<span class="name">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+            option: function (item, escape) {
+
+                return (
+                    '<div>' +
+                    '<span class="caption">' + item.name + '</span>' +
+                    '</div>'
+                );
+            },
+
+        },
+
+        load: function (query, callback) {
+            if (!query.length) return callback();
+            console.log(query);
+            var self = this;
+            $.ajax({
+                url: encodeURI('/CardOperation/FindExecutors?query=' + query, true),
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    count: 100
+                },
+                error: function () {
+                    callback();
+                },
+                success: function (res) {
+                    self.clearOptions();
+                    callback(res);
+                }
+            })
+        }
+    });
+</script>

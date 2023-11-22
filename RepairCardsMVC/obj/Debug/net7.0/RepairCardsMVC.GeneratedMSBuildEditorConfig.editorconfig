@@ -1,0 +1,421 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = RepairCardsMVC
+build_property.RootNamespace = RepairCardsMVC
+build_property.ProjectDir = D:\StepanenkoDO\Рабочий стол\Новая папка (2)\Repair Cards MVC Github\RepairCardsMVC\RepairCardsMVC\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\StepanenkoDO\Рабочий стол\Новая папка (2)\Repair Cards MVC Github\RepairCardsMVC\RepairCardsMVC
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/Account/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxMb2dvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/Account/Manage/ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcQ2hhbmdlUGFzc3dvcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/Account/Manage/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/Account/Manage/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/Account/Manage/_ManageNav.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX01hbmFnZU5hdi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/Account/Manage/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxNYW5hZ2VcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/Account/_StatusMessage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxfU3RhdHVzTWVzc2FnZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/Account/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcQWNjb3VudFxfVmlld0ltcG9ydHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZhbGlkYXRpb25TY3JpcHRzUGFydGlhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Areas/Identity/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcSWRlbnRpdHlcUGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardChildCard/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZENoaWxkQ2FyZFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardConfirmation/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZENvbmZpcm1hdGlvblxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardDetails/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZERldGFpbHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardDocument/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZERvY3VtZW50XENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardDocument/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZERvY3VtZW50XEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardDocument/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZERvY3VtZW50XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardMaterial/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE1hdGVyaWFsXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardMaterial/CreateByCard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE1hdGVyaWFsXENyZWF0ZUJ5Q2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardMaterial/CreateByProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE1hdGVyaWFsXENyZWF0ZUJ5UHJvZHVjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardMaterial/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE1hdGVyaWFsXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardMaterial/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE1hdGVyaWFsXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOperation/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE9wZXJhdGlvblxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOperation/CreateByPlanOperations.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE9wZXJhdGlvblxDcmVhdGVCeVBsYW5PcGVyYXRpb25zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOperation/CreateFactOperationByCard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE9wZXJhdGlvblxDcmVhdGVGYWN0T3BlcmF0aW9uQnlDYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOperation/CreateFactOperationByTemplate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE9wZXJhdGlvblxDcmVhdGVGYWN0T3BlcmF0aW9uQnlUZW1wbGF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOperation/CreatePlanOperationByCard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE9wZXJhdGlvblxDcmVhdGVQbGFuT3BlcmF0aW9uQnlDYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOperation/CreatePlanOperationByTemplate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE9wZXJhdGlvblxDcmVhdGVQbGFuT3BlcmF0aW9uQnlUZW1wbGF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOperation/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE9wZXJhdGlvblxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOperation/FactOperations.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE9wZXJhdGlvblxGYWN0T3BlcmF0aW9ucy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOperation/PlanOperations.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE9wZXJhdGlvblxQbGFuT3BlcmF0aW9ucy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOwnProductOperation/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE93blByb2R1Y3RPcGVyYXRpb25cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOwnProductOperation/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE93blByb2R1Y3RPcGVyYXRpb25cRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOwnProductRepairOperation/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE93blByb2R1Y3RSZXBhaXJPcGVyYXRpb25cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOwnProductRepairOperation/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE93blByb2R1Y3RSZXBhaXJPcGVyYXRpb25cRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOwnProduct/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE93blByb2R1Y3RcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOwnProduct/CreateByCard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE93blByb2R1Y3RcQ3JlYXRlQnlDYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOwnProduct/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE93blByb2R1Y3RcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardOwnProduct/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZE93blByb2R1Y3RcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardPurchasedProductOperation/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFB1cmNoYXNlZFByb2R1Y3RPcGVyYXRpb25cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardPurchasedProductOperation/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFB1cmNoYXNlZFByb2R1Y3RPcGVyYXRpb25cRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardPurchasedProduct/CreateByCard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFB1cmNoYXNlZFByb2R1Y3RcQ3JlYXRlQnlDYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardPurchasedProduct/CreateByProduct.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFB1cmNoYXNlZFByb2R1Y3RcQ3JlYXRlQnlQcm9kdWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardPurchasedProduct/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFB1cmNoYXNlZFByb2R1Y3RcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardPurchasedProduct/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFB1cmNoYXNlZFByb2R1Y3RcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardReport/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFJlcG9ydFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardStatus/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFN0YXR1c1xDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardStatus/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFN0YXR1c1xEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardStatus/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFN0YXR1c1xFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/CardStatus/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFN0YXR1c1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Card/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Card/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Card/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Card/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FyZFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Executor/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhlY3V0b3JcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Executor/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhlY3V0b3JcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Executor/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhlY3V0b3JcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Executor/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhlY3V0b3JcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/ExportRequest/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhwb3J0UmVxdWVzdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Operation/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3BlcmF0aW9uXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Operation/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3BlcmF0aW9uXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Operation/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3BlcmF0aW9uXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Operation/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3BlcmF0aW9uXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/RepairType/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwYWlyVHlwZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/RepairType/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwYWlyVHlwZVxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/RepairType/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwYWlyVHlwZVxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/RepairType/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwYWlyVHlwZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Report/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/RequestToCreateStagesIn1S/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVxdWVzdFRvQ3JlYXRlU3RhZ2VzSW4xU1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Request/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVxdWVzdFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Request/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVxdWVzdFxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Request/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVxdWVzdFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Request/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVxdWVzdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Role/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Role/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Shared/_Filtering.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9GaWx0ZXJpbmcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Shared/_Pagination.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9QYWdpbmF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/TemplateOperation/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVtcGxhdGVPcGVyYXRpb25cQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/TemplateOperation/CreateByCard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVtcGxhdGVPcGVyYXRpb25cQ3JlYXRlQnlDYXJkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/TemplateOperation/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVtcGxhdGVPcGVyYXRpb25cRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/TemplateOperation/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVtcGxhdGVPcGVyYXRpb25cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Template/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVtcGxhdGVcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Template/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVtcGxhdGVcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Template/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVtcGxhdGVcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Template/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVtcGxhdGVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/UnlockedPeriod/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVW5sb2NrZWRQZXJpb2RcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/UnlockedPeriod/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVW5sb2NrZWRQZXJpb2RcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/UnlockedPeriod/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVW5sb2NrZWRQZXJpb2RcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/UnlockedPeriod/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVW5sb2NrZWRQZXJpb2RcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/User/ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxDaGFuZ2VQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/User/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/User/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/User/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/StepanenkoDO/Рабочий стол/Новая папка (2)/Repair Cards MVC Github/RepairCardsMVC/RepairCardsMVC/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-ykb8tket3a

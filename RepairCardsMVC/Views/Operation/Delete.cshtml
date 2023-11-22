@@ -1,0 +1,44 @@
+﻿@model Operation
+
+<a asp-action="Index"
+   asp-route-filter="@ViewBag.Filter"
+   asp-route-pageNumber="@ViewBag.PageNumber">Назад</a>
+
+<h2 class="mb-4">Удалить операцию</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Код</dt>
+    <dd class="col-sm-9">@Model.Code</dd>
+
+    <dt class="col-sm-3">Наименование</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+
+    <dt class="col-sm-3">Трудоемкость</dt>
+    <dd class="col-sm-9">@Model.Labor</dd>
+
+    <dt class="col-sm-3">Цена</dt>
+    <dd class="col-sm-9">@Model.Price</dd>
+
+    <dt class="col-sm-3">Группа</dt>
+    <dd class="col-sm-9">@Model.GroupName</dd>
+
+    <dt class="col-sm-3">Цех</dt>
+    <dd class="col-sm-9">@Model.Department</dd>
+
+    <dt class="col-sm-3">Единица измерения</dt>
+    <dd class="col-sm-9">@Model.UnitName</dd>
+
+    <dt class="col-sm-3">Описание</dt>
+    <dd class="col-sm-9">@Model.Description</dd>
+
+    <dt class="col-sm-3">Не используется</dt>
+    <dd class="col-sm-9">@(Model.IsInactive ? "Да" : "Нет")</dd>
+
+    <dt class="col-sm-3">Код производственной операции</dt>
+    <dd class="col-sm-9">@Model.ProductionOperationCode</dd>
+</dl>
+
+<form method="post">
+    <input name="Item.Id" asp-for="Id" hidden />
+    <button type="submit" class="btn btn-danger">Удалить</button>
+</form>

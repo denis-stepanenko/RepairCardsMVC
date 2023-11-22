@@ -1,0 +1,64 @@
+﻿@model List<CardPurchasedProduct>
+
+<a asp-controller="Card"
+   asp-action="Edit"
+   asp-route-id="@ViewBag.CardId"
+   asp-route-pageNumber="@ViewBag.CardsPageNumber"
+   asp-route-filter="@ViewBag.CardsFilter">Назад</a>
+
+<h2>ПКИ</h2>
+
+@if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+{
+    <a class="btn btn-dark"
+   asp-action="CreateByCard"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardsFilter="@ViewBag.CardsFilter">Добавить из другой карты</a>
+
+    <a class="btn btn-dark"
+   asp-action="CreateByProduct"
+   asp-route-cardId="@ViewBag.CardId"
+   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+   asp-route-cardsFilter="@ViewBag.CardsFilter">Добавить из продукта</a>
+}
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Децимальный номер</th>
+            <th>Наименование</th>
+            <th>Количество</th>
+            <th width="250px"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Code</td>
+                <td>@item.Name</td>
+                <td>@item.Count</td>
+                <td>
+                    <a asp-action="Edit"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter"
+                       class="btn btn-success">Изменить</a>
+
+                    @if (User.IsInAnyRole("tb", "ooiot", "creator", "prb"))
+                    {
+                        <a asp-action="Delete"
+                   asp-route-id="@item.Id"
+                   asp-route-cardId="@ViewBag.CardId"
+                   asp-route-cardsPageNumber="@ViewBag.CardsPageNumber"
+                   asp-route-cardsFilter="@ViewBag.CardsFilter"
+                           class="btn btn-danger">Удалить</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
